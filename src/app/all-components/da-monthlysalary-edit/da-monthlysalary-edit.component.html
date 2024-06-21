@@ -1,0 +1,2166 @@
+<section class="main-content" *ngIf="roleName === 'DA'">
+    <div class="filter-row mb-4">
+        <div class="">
+
+            <div class="d-flex justify-content-start align-items-center"> <!-- Added align-items-center -->
+                <label for="" class="label-name">Paybill No :</label> <!-- Removed extra space -->
+                <input class="voucher_in form-control mx-1" type="text" [(ngModel)]="voucherNo" readonly>
+            </div>
+        </div>
+
+        <div class="m-4">
+
+            <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                <mat-label>Employee ID</mat-label>
+                <mat-select [(ngModel)]="selectedEmployeeIds"
+                    (selectionChange)="applyTableEmpIdFilter(selectedEmployeeIds)" multiple [disabled]="isDisabled">
+                    <mat-option *ngFor="let employeeId of payRollDet" [value]="employeeId.employeeId"
+                        [selected]="isSelected(employeeId.employeeId)">
+                        {{employeeId.employeeId}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                <mat-label>Divisions</mat-label>
+                <mat-select (selectionChange)="applyTableDivisionFilter($event)" multiple [disabled]="isDisabled">
+                    <mat-option *ngFor="let officeName of allEmployeeData" [value]="officeName.officeName">
+                        {{officeName.officeName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="apiDate" (dateChange)="onDateChange($event)"
+                    [disabled]="isDisabled">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field> -->
+
+            <div class="ms-2 d-flex align-items-center" >
+                <label  class="form-label mb-0"><strong>Date:</strong></label>
+                <input class="form-control mt-0" [(ngModel)]="apiDate"  [disabled]="isDisabled"
+                    (input)="onDateChange($event)" required>
+            </div>
+        </div>
+    </div>
+
+
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" *ngIf="paymentType == 'DA Arrear'">
+            <!-- Form for Date Range and DA Difference -->
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" style="display: flex; align-items: center;">
+                <div style="margin-right: 10px;">
+                    <label for="Doc_num"><strong>From Date :</strong></label>
+                    <input class="form-control" type="date" id="Doc_num" formControlName="from" [disabled]="isDisabled">
+                </div>
+                <div style="margin-right: 10px;">
+                    <label for="Total_amount"><strong>To Date :</strong></label>
+                    <input class="form-control" type="date" id="Total_amount" [disabled]="isDisabled" formControlName="to">
+                </div>
+                <div style="margin-right: 10px;">
+                    <label for="Total_amount"><strong>DA Difference :</strong></label>
+                    <input type="text" class="form-control w-25" [disabled]="isDisabled" placeholder="DA" formControlName="daDiff">
+                </div>
+                <button type="submit" [disabled]="!form.valid" *ngIf="submit" class="btn btn-primary mt-4">Submit</button>
+            </form>
+        </div>
+
+    <!-- <div></div> -->
+    <h3 *ngIf="paymentType == 'Pay Arrear'" style="text-align: center;" class="heading">Pay Arrear</h3>
+    <h3 *ngIf="paymentType == 'DA Arrear'" style="text-align: center;" class="heading">DA Arrear</h3>
+    <h3 *ngIf="paymentType == 'Monthly Salary'" style="text-align: center;" class="heading">Monthly Salary</h3>
+    <h3 *ngIf="paymentType == 'EL Surrender'" style="text-align: center;" class="heading">EL Surrender</h3>
+
+     <!-- Left buttons: Excel and PDF -->
+     <div class="d-flex" *ngIf="paymentType == 'Monthly Salary'">
+        <button class="btn excelBtn me-2" id="excel" (click)="monthlySalary_downloadExcel()">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                    <path
+                        d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                </svg>
+            </span> Excel
+        </button>
+        <button class="btn btn-light pdfBtn" (click)="monthlySalary_downloadPDF()">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                    class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                    <path
+                        d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                </svg>
+            </span> PDF
+        </button>
+    </div>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType != 'EL Surrender' && paymentType != 'DA Arrear'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="officeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Name </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.officeName}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> Total </strong></td>
+
+            </ng-container>
+
+            <!-- Cost Column -->
+            <!-- <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef> Total Earnings </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Earnings
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        To be Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Total DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary' || paymentType == 'Supplementary Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId,allEmployeeDataSource.employeeName,allEmployeeDataSource.designationName,allEmployeeDataSource.officeName,voucherNo,allEmployeeDataSource.officeCode,allEmployeeDataSource.dateOfJoiningService)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="employeeTableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: employeeTableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="employeeTableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType == 'EL Surrender'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationCode}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="designationName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLMonth">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> EL Month </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="employeepayroll.selectedMonth" (selectionChange)="onMonthChange(employeepayroll, $event)">
+                        <mat-option *ngFor="let month of months" [value]="month.value">
+                          {{ month.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{ employeepayroll.elMonth }}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+              <ng-container matColumnDef="eLNoOfdays">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>No of Days </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <input matInput [(ngModel)]="employeepayroll.noOfDays" placeholder="days"
+                           (ngModelChange)="calculatePay(employeepayroll)"
+                           *ngIf="employeepayroll.splPay || employeepayroll.da || employeepayroll.hra || employeepayroll.cca"
+                           style="width: 50px;">
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{employeepayroll.noOfDays}}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+            <ng-container matColumnDef="eLbasicPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elBasicPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLsplPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Special pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elSpecialPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLda">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> DA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elDa}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLhra">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> HRA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elHra}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLcca">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> CCA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elCca}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong>Total</strong></td>
+            </ng-container>
+
+            <ng-container matColumnDef="grossTotal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gross </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.grossTotal | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container> -->
+
+
+            <tr mat-header-row *matHeaderRowDef="eLtableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: eLtableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="eLtableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card mt-3" *ngIf="paymentType == 'DA Arrear'" >
+
+        <div class="table-container">
+
+            <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8" class="table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="Sno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee ID Column -->
+                <ng-container matColumnDef="employeeId">
+                    <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeId}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee Name Column -->
+                <ng-container matColumnDef="employeeName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Code Column -->
+                <ng-container matColumnDef="designationCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationCode}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Name Column -->
+                <ng-container matColumnDef="designationName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> <strong> Total </strong></td>
+                </ng-container>
+            
+                <!-- Dynamic Columns -->
+                <ng-container *ngFor="let column of dynamicColumns" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ getColumnValue(element, column) }}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Gross Total Column -->
+                <ng-container matColumnDef="grossTotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>DA Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.grossTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- CPS Column -->
+                <ng-container matColumnDef="cps">
+                    <th mat-header-cell *matHeaderCellDef>CPS</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cps | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalDeduction |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- Net Total Column -->
+                <ng-container matColumnDef="netTotal">
+                    <th mat-header-cell *matHeaderCellDef>Net Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.netTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalNetpay |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+            
+            
+            
+
+        </div>
+    </div>
+
+
+</section>
+
+<section class="main-content" *ngIf="roleName === 'AO'">
+    <div class="filter-row mb-4">
+        <div class="col-6">
+            <!-- <h1>AO</h1> -->
+            <div class="d-flex justify-content-start">
+                <label for="" class=" label-name">Paybill No : </label>
+                <input class="voucher_in form-control mx-1" type="text" [(ngModel)]="voucherNo" readonly>
+            </div>
+        </div>
+
+        <div class="m-4">
+
+            <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;" *ngIf="roleName == 'DA'">
+                <mat-label>Employee ID</mat-label>
+                <mat-select [(ngModel)]="selectedEmployeeIds"
+                    (selectionChange)="applyTableEmpIdFilter(selectedEmployeeIds)" multiple>
+                    <mat-option *ngFor="let employeeId of allEmployeeData" [value]="employeeId.employeeId"
+                        [selected]="isSelected(employeeId.employeeId)">
+                        {{employeeId.employeeId}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;" *ngIf="roleName == 'DA'">
+                <mat-label>Divisions</mat-label>
+                <mat-select (selectionChange)="applyTableDivisionFilter($event)" multiple>
+                    <mat-option *ngFor="let officeName of allEmployeeData" [value]="officeName.officeName">
+                        {{officeName.officeName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="ms-2 d-flex align-items-center" >
+            <label  class="form-label mb-0"><strong>Date:</strong></label>
+            <input class="form-control mt-0" [(ngModel)]="apiDate"  [disabled]="isDisabled"
+                (input)="onDateChange($event)" required>
+        </div>
+    </div>
+
+    <div class="search-container" *ngIf="!isView">
+        <div>
+            <input matInput #input type="text" id="search-input" class="search-input" placeholder="Search...">
+            <div class="search-icon">
+                <mat-icon>search</mat-icon>
+            </div>
+        </div>
+    </div>
+
+    
+    <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" *ngIf="paymentType == 'DA Arrear'">
+        <!-- Form for Date Range and DA Difference -->
+        <form [formGroup]="form" style="display: flex; align-items: center;">
+            <div style="margin-right: 10px;">
+                <label for="Doc_num"><strong>From Date :</strong></label>
+                <input class="form-control" type="date" id="Doc_num" formControlName="from">
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="Total_amount"><strong>To Date :</strong></label>
+                <input class="form-control" type="date" id="Total_amount" formControlName="to">
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="Total_amount"><strong>DA Difference :</strong></label>
+                <input type="text" class="form-control w-25" placeholder="DA" formControlName="daDiff">
+            </div>
+        </form>
+    </div>
+
+    <!-- <div></div> -->
+    <h3 *ngIf="paymentType == 'Pay Arrear'" style="text-align: center;" class="heading">Pay Arrear</h3>
+    <h3 *ngIf="paymentType == 'DA Arrear'" style="text-align: center;" class="heading">DA Arrear</h3>
+    <h3 *ngIf="paymentType == 'Monthly Salary'" style="text-align: center;" class="heading">Monthly Salary</h3>
+    <h3 *ngIf="paymentType == 'EL Surrender'" style="text-align: center;" class="heading">EL Surrender</h3>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType != 'EL Surrender' && paymentType != 'DA Arrear'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="officeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Name </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.officeName}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> Total </strong></td>
+
+            </ng-container>
+
+            <!-- Cost Column -->
+            <!-- <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef> Total Earnings </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Earnings
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        To be Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Total DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!--Arrear heads-->
+
+            <!-- <ng-container matColumnDef="tobeDrawn">
+                <th mat-header-cell *matHeaderCellDef> To Be Drawn </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="alreadyDrawn">
+                <th mat-header-cell *matHeaderCellDef>Deductions </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Net Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary' || paymentType == 'Supplementary Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                        (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId,allEmployeeDataSource.employeeName,allEmployeeDataSource.designationName,allEmployeeDataSource.officeName,voucherNo,allEmployeeDataSource.officeCode,allEmployeeDataSource.dateOfJoiningService)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="employeeTableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: employeeTableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="employeeTableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType == 'EL Surrender'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationCode}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="designationName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLMonth">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> EL Month </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="employeepayroll.selectedMonth" (selectionChange)="onMonthChange(employeepayroll, $event)">
+                        <mat-option *ngFor="let month of months" [value]="month.value">
+                          {{ month.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{ employeepayroll.elMonth }}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+              <ng-container matColumnDef="eLNoOfdays">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>No of Days </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <input matInput [(ngModel)]="employeepayroll.noOfDays" placeholder="days"
+                           (ngModelChange)="calculatePay(employeepayroll)"
+                           *ngIf="employeepayroll.splPay || employeepayroll.da || employeepayroll.hra || employeepayroll.cca"
+                           style="width: 50px;">
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{employeepayroll.noOfDays}}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+            <ng-container matColumnDef="eLbasicPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elBasicPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLsplPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Special pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elSpecialPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLda">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> DA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elDa}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLhra">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> HRA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elHra}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLcca">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> CCA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elCca}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong>Total</strong></td>
+            </ng-container>
+
+            <ng-container matColumnDef="grossTotal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gross </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.grossTotal | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container> -->
+
+
+            <tr mat-header-row *matHeaderRowDef="eLtableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: eLtableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="eLtableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card mt-3" *ngIf="paymentType == 'DA Arrear'" >
+
+        <div class="table-container">
+
+            <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8" class="table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="Sno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee ID Column -->
+                <ng-container matColumnDef="employeeId">
+                    <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeId}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee Name Column -->
+                <ng-container matColumnDef="employeeName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Code Column -->
+                <ng-container matColumnDef="designationCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationCode}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Name Column -->
+                <ng-container matColumnDef="designationName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> <strong> Total </strong></td>
+                </ng-container>
+            
+                <!-- Dynamic Columns -->
+                <ng-container *ngFor="let column of dynamicColumns" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ getColumnValue(element, column) }}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Gross Total Column -->
+                <ng-container matColumnDef="grossTotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>DA Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.grossTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- CPS Column -->
+                <ng-container matColumnDef="cps">
+                    <th mat-header-cell *matHeaderCellDef>CPS</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cps | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalDeduction |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- Net Total Column -->
+                <ng-container matColumnDef="netTotal">
+                    <th mat-header-cell *matHeaderCellDef>Net Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.netTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalNetpay |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+            
+            
+            
+
+        </div>
+    </div>
+</section>
+
+<section class="main-content" *ngIf="roleName === 'DCAO'">
+    <div class="filter-row mb-4">
+        <div class="col-6">
+
+            <div class="mt-2">
+                <label for="" class=" label-name">Paybill No : </label>
+                <input class="voucher_in form-control mx-1" type="text" [(ngModel)]="voucherNo" readonly>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <div class="search-container">
+        <div>
+            <input matInput #input type="text" id="search-input" class="search-input" placeholder="Search...">
+            <div class="search-icon">
+                <mat-icon>search</mat-icon>
+            </div>
+        </div>
+    </div> -->
+
+    <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" *ngIf="paymentType == 'DA Arrear'">
+        <!-- Form for Date Range and DA Difference -->
+        <form [formGroup]="form" style="display: flex; align-items: center;">
+            <div style="margin-right: 10px;">
+                <label for="Doc_num"><strong>From Date :</strong></label>
+                <input class="form-control" type="date" id="Doc_num" formControlName="from">
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="Total_amount"><strong>To Date :</strong></label>
+                <input class="form-control" type="date" id="Total_amount" formControlName="to">
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="Total_amount"><strong>DA Difference :</strong></label>
+                <input type="text" class="form-control w-25" placeholder="DA" formControlName="daDiff">
+            </div>
+        </form>
+    </div>
+
+    <h3 *ngIf="paymentType == 'Pay Arrear'" style="text-align: center;" class="heading">Pay Arrear</h3>
+    <h3 *ngIf="paymentType == 'DA Arrear'" style="text-align: center;" class="heading">DA Arrear</h3>
+    <h3 *ngIf="paymentType == 'Monthly Salary'" style="text-align: center;" class="heading">Monthly Salary</h3>
+    <h3 *ngIf="paymentType == 'EL Surrender'" style="text-align: center;" class="heading">EL Surrender</h3>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType != 'EL Surrender' && paymentType != 'DA Arrear'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="officeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Name </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.officeName}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> Total </strong></td>
+
+            </ng-container>
+
+            <!-- Cost Column -->
+            <!-- <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef> Total Earnings </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Earnings
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        To be Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Total DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!--Arrear heads-->
+
+            <!-- <ng-container matColumnDef="tobeDrawn">
+                <th mat-header-cell *matHeaderCellDef> To Be Drawn </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="alreadyDrawn">
+                <th mat-header-cell *matHeaderCellDef>Deductions </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Net Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary' || paymentType == 'Supplementary Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                        (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId,allEmployeeDataSource.employeeName,allEmployeeDataSource.designationName,allEmployeeDataSource.officeName,voucherNo,allEmployeeDataSource.officeCode,allEmployeeDataSource.dateOfJoiningService)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="employeeTableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: employeeTableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="employeeTableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType == 'EL Surrender'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationCode}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="designationName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLMonth">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> EL Month </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="employeepayroll.selectedMonth" (selectionChange)="onMonthChange(employeepayroll, $event)">
+                        <mat-option *ngFor="let month of months" [value]="month.value">
+                          {{ month.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{ employeepayroll.elMonth }}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+              <ng-container matColumnDef="eLNoOfdays">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>No of Days </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <input matInput [(ngModel)]="employeepayroll.noOfDays" placeholder="days"
+                           (ngModelChange)="calculatePay(employeepayroll)"
+                           *ngIf="employeepayroll.splPay || employeepayroll.da || employeepayroll.hra || employeepayroll.cca"
+                           style="width: 50px;">
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{employeepayroll.noOfDays}}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+            <ng-container matColumnDef="eLbasicPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elBasicPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLsplPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Special pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elSpecialPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLda">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> DA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elDa}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLhra">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> HRA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elHra}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLcca">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> CCA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elCca}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong>Total</strong></td>
+            </ng-container>
+
+            <ng-container matColumnDef="grossTotal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gross </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.grossTotal | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container> -->
+
+
+            <tr mat-header-row *matHeaderRowDef="eLtableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: eLtableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="eLtableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card mt-3" *ngIf="paymentType == 'DA Arrear'" >
+
+        <div class="table-container">
+
+            <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8" class="table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="Sno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee ID Column -->
+                <ng-container matColumnDef="employeeId">
+                    <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeId}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee Name Column -->
+                <ng-container matColumnDef="employeeName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Code Column -->
+                <ng-container matColumnDef="designationCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationCode}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Name Column -->
+                <ng-container matColumnDef="designationName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> <strong> Total </strong></td>
+                </ng-container>
+            
+                <!-- Dynamic Columns -->
+                <ng-container *ngFor="let column of dynamicColumns" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ getColumnValue(element, column) }}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Gross Total Column -->
+                <ng-container matColumnDef="grossTotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>DA Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.grossTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- CPS Column -->
+                <ng-container matColumnDef="cps">
+                    <th mat-header-cell *matHeaderCellDef>CPS</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cps | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalDeduction |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- Net Total Column -->
+                <ng-container matColumnDef="netTotal">
+                    <th mat-header-cell *matHeaderCellDef>Net Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.netTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalNetpay |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+            
+            
+            
+
+        </div>
+    </div>
+</section>
+
+<section class="main-content" *ngIf="roleName === 'FA'">
+    <div class="filter-row mb-4">
+        <div class="col-6">
+
+            <div class="d-flex justify-content-start">
+                <label for="" class=" label-name">Paybill No : </label>
+                <input class="voucher_in form-control mx-1" type="text" [(ngModel)]="voucherNo" readonly>
+            </div>
+        </div>
+
+    </div>
+<!-- 
+    <div class="search-container">
+        <div>
+            <input matInput #input type="text" id="search-input" class="search-input" placeholder="Search...">
+            <div class="search-icon">
+                <mat-icon>search</mat-icon>
+            </div>
+        </div>
+    </div> -->
+
+    <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" *ngIf="paymentType == 'DA Arrear'">
+        <!-- Form for Date Range and DA Difference -->
+        <form [formGroup]="form" style="display: flex; align-items: center;">
+            <div style="margin-right: 10px;">
+                <label for="Doc_num"><strong>From Date :</strong></label>
+                <input class="form-control" type="date" id="Doc_num" formControlName="from">
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="Total_amount"><strong>To Date :</strong></label>
+                <input class="form-control" type="date" id="Total_amount" formControlName="to">
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="Total_amount"><strong>DA Difference :</strong></label>
+                <input type="text" class="form-control w-25" placeholder="DA" formControlName="daDiff">
+            </div>
+        </form>
+    </div>
+
+    <h3 *ngIf="paymentType == 'Pay Arrear'" style="text-align: center;" class="heading">Pay Arrear</h3>
+    <h3 *ngIf="paymentType == 'DA Arrear'" style="text-align: center;" class="heading">DA Arrear</h3>
+    <h3 *ngIf="paymentType == 'Monthly Salary'" style="text-align: center;" class="heading">Monthly Salary</h3>
+    <h3 *ngIf="paymentType == 'EL Surrender'" style="text-align: center;" class="heading">EL Surrender</h3>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType != 'EL Surrender' && paymentType != 'DA Arrear'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="officeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Name </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.officeName}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> Total </strong></td>
+
+            </ng-container>
+
+            <!-- Cost Column -->
+            <!-- <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef> Total Earnings </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="totalEarning">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Earnings
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        To be Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Total DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <!-- <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container> -->
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!--Arrear heads-->
+
+            <!-- <ng-container matColumnDef="tobeDrawn">
+                <th mat-header-cell *matHeaderCellDef> To Be Drawn </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalEarning | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="alreadyDrawn">
+                <th mat-header-cell *matHeaderCellDef>Deductions </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Net Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary' || paymentType == 'Supplementary Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                        (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId,allEmployeeDataSource.employeeName,allEmployeeDataSource.designationName,allEmployeeDataSource.officeName,voucherNo,allEmployeeDataSource.officeCode,allEmployeeDataSource.dateOfJoiningService)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="employeeTableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: employeeTableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="employeeTableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card" style="margin-top: 20px;" *ngIf="paymentType == 'EL Surrender'">
+        <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8"
+            class="table application-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let employee; let i = index" style="margin-top: 10px;"> {{ i + 1 }} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+            <!-- Item Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeId}} </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.employeeName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="designationCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationCode}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="designationName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.designationName}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLMonth">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> EL Month </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="employeepayroll.selectedMonth" (selectionChange)="onMonthChange(employeepayroll, $event)">
+                        <mat-option *ngFor="let month of months" [value]="month.value">
+                          {{ month.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{ employeepayroll.elMonth }}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+              <ng-container matColumnDef="eLNoOfdays">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>No of Days </th>
+                <td mat-cell *matCellDef="let employeepayroll">
+                  <ng-container *ngIf="isElEdit; else readOnlyTemplate">
+                    <input matInput [(ngModel)]="employeepayroll.noOfDays" placeholder="days"
+                           (ngModelChange)="calculatePay(employeepayroll)"
+                           *ngIf="employeepayroll.splPay || employeepayroll.da || employeepayroll.hra || employeepayroll.cca"
+                           style="width: 50px;">
+                  </ng-container>
+                  <ng-template #readOnlyTemplate>
+                    {{employeepayroll.noOfDays}}
+                  </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+
+            <ng-container matColumnDef="eLbasicPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elBasicPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLsplPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Special pay </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elSpecialPay}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLda">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> DA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elDa}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLhra">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> HRA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elHra}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="eLcca">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> CCA </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.elCca}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong>Total</strong></td>
+            </ng-container>
+
+            <ng-container matColumnDef="grossTotal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gross </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.grossTotal | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong> {{this.totalEarningtotal | number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="totaltotalDeductions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Total Deductions
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Already Drawn
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        CPS
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource">
+                    {{allEmployeeDataSource.totalDeductions | number:'1.2-2'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalDeduction | number:'1.2-2'}} </strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netPay">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <ng-container *ngIf="paymentType == 'Monthly Salary'">
+                        Net Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'Pay Arrear'">
+                        Difference Pay
+                    </ng-container>
+                    <ng-container *ngIf="paymentType == 'DA Arrear'">
+                        Net DA
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource"> {{allEmployeeDataSource.netPay |
+                    number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef><strong> {{this.totalNetpay| number:'1.2-2'}}</strong>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let allEmployeeDataSource" class="p-0">
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Monthly Salary'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialog('view', allEmployeeDataSource.id)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'Pay Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogPayArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-evenly" *ngIf="paymentType == 'DA Arrear'">
+                        <a matTooltip="View" class="action_column" style="margin-top: 10px;"
+                            (click)="openDialogDaArrear('view', allEmployeeDataSource.employeeId)">
+                            <mat-icon style="color: #503C3C;">visibility</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container> -->
+
+
+            <tr mat-header-row *matHeaderRowDef="eLtableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: eLtableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="eLtableColumns"></tr>
+        </table>
+
+
+        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+    <div class="card mt-3" *ngIf="paymentType == 'DA Arrear'" >
+
+        <div class="table-container">
+
+            <table mat-table [dataSource]="filteredDataSource" matSort class="mat-elevation-z8" class="table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="Sno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee ID Column -->
+                <ng-container matColumnDef="employeeId">
+                    <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeId}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Employee Name Column -->
+                <ng-container matColumnDef="employeeName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Code Column -->
+                <ng-container matColumnDef="designationCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Code</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationCode}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Designation Name Column -->
+                <ng-container matColumnDef="designationName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.designationName}} </td>
+                    <td mat-footer-cell *matFooterCellDef> <strong> Total </strong></td>
+                </ng-container>
+            
+                <!-- Dynamic Columns -->
+                <ng-container *ngFor="let column of dynamicColumns" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ getColumnValue(element, column) }}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+            
+                <!-- Gross Total Column -->
+                <ng-container matColumnDef="grossTotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>DA Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.grossTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalEarningtotal |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- CPS Column -->
+                <ng-container matColumnDef="cps">
+                    <th mat-header-cell *matHeaderCellDef>CPS</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cps | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalDeduction |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <!-- Net Total Column -->
+                <ng-container matColumnDef="netTotal">
+                    <th mat-header-cell *matHeaderCellDef>Net Total</th>
+                    <td mat-cell *matCellDef="let element"> {{element.netTotal | number:'1.2-2'}} </td>
+                    <td mat-footer-cell *matFooterCellDef><strong>{{this.totalNetpay |
+                        number:'1.2-2'}}</strong> </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+            
+            
+            
+
+        </div>
+    </div>
+</section>
+
+
+<!-- DA REMARKS FIELDS-->
+
+<mat-accordion>
+    <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header style="color: #643843;font-size: 20px;">
+            DA
+        </mat-expansion-panel-header>
+        <div class="remarksForm card" [formGroup]="EditRemarksForm">
+            <div class="m-2">
+                <label class="label-name">Remarks : </label>
+                <textarea name="remarks" class="remarksField form-control" rows="5" id="sign" style="width: 200px;"
+                    formControlName="remarksforDA"></textarea>
+            </div>
+            <div class="m-2">
+                <label class="label-name">Signature : </label>
+                <input id="sign" type="text" class="form-control" formControlName="signature">
+            </div>
+            <div class="m-2">
+                <label class="label-name">Date : </label>
+                <input id="date" class="form-control" formControlName="date">
+            </div>
+            <div class="footerButtons" *ngIf="this.roleName == 'DA'">
+                <button type="button" routerLink="/payroll/monthlysalary" class="btn btn-danger m-1">Back</button>
+                <button type="button" class="btn btn-success m-1" *ngIf="submit" (click)="monthlySalaryEdit()"
+                    [disabled]="EditRemarksForm.invalid">Submit</button>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion><br>
+
+<!--AO REMARKS FIELDS-->
+
+<mat-accordion *ngIf="roleName === 'AO' || roleName === 'DCAO' || roleName === 'FA'">
+    <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header style="color: #643843;font-size: 20px;">
+            AO
+        </mat-expansion-panel-header>
+        <form class="remarksForm card" [formGroup]="EditRemarksFormAO">
+            <div class="m-2">
+                <label class="label-name">Remarks : </label>
+                <textarea name="remarks" class="remarksField form-control" rows="5" id="sign" style="width: 200px;"
+                    formControlName="remarksforAO"></textarea>
+            </div>
+
+            <div class="m-2">
+                <label class="label-name">Signature : </label>
+                <input id="sign" type="text" class="form-control" formControlName="signatureForAO">
+            </div>
+            <div class="m-2">
+                <label class="label-name">Date : </label>
+                <input type="text" id="date" class="form-control" formControlName="dateOfAO" readonly>
+            </div>
+
+            <div class="footerButtons" *ngIf="roleName == 'AO'">
+                <button type="button" routerLink="/payroll/monthlysalary" class="btn btn-danger m-1">Back</button>
+
+                <button type="button" class="btn btn-success m-1" *ngIf="submit" (click)="monthlySalaryEdit()"
+                    [disabled]="EditRemarksFormAO.invalid">Submit</button>
+
+                <button *ngIf="this.roleName =='AO' && isRevert" type="button" class="btn btn-danger m-1"
+                    (click)="revertTerm()" [disabled]="EditRemarksFormAO.invalid && isRevert">Revert</button>
+            </div>
+        </form>
+    </mat-expansion-panel>
+</mat-accordion><br>
+
+<!--DCAO REMARKS FIELDS-->
+
+<mat-accordion *ngIf="roleName == 'DCAO' || roleName == 'FA'">
+    <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header style="color: #643843;font-size: 20px;">
+            DCAO
+        </mat-expansion-panel-header>
+        <div class="remarksForm card" [formGroup]="EditRemarksFormDCAO">
+            <div class="m-2">
+                <label class="label-name">Remarks : </label>
+                <textarea name="remarks" class="remarksField form-control" rows="5" id="sign" style="width: 200px;"
+                    formControlName="remarksforDCAO"></textarea>
+            </div>
+
+            <div class="m-2">
+                <label class="label-name">Signature : </label>
+                <input id="sign" type="text" class="form-control" formControlName="signatureForDCAO">
+            </div>
+            <div class="m-2">
+                <label class="label-name">Date : </label>
+                <input type="text" class="form-control" formControlName="dateOfDCAO" readonly>
+            </div>
+
+            <div class="footerButtons" *ngIf="roleName == 'DCAO'">
+                <button type="button" routerLink="/payroll/monthlysalary" class="btn btn-danger m-1">Back</button>
+
+                <button type="button" class="btn btn-success m-1" *ngIf="submit" (click)="monthlySalaryEdit()"
+                    [disabled]="EditRemarksFormDCAO.invalid">Submit</button>
+
+                <!-- <button *ngIf="this.roleName =='AO' && isRevert" type="button"  class="btn btn-danger m-1" (click)="revertTerm()"
+                [disabled]="EditRemarksFormDCAO.invalid && isRevert">Revert</button> -->
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion><br>
+
+<!--FA REMARKS FIELDS-->
+
+<mat-accordion *ngIf="roleName == 'FA'">
+    <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header style="color: #643843;font-size: 20px;">
+            FA
+        </mat-expansion-panel-header>
+        <div class="remarksForm card" [formGroup]="EditRemarksFormFA">
+            <div class="m-2">
+                <label class="label-name">Remarks : </label>
+                <textarea name="remarks" class="remarksField form-control" rows="5" id="sign" style="width: 200px;"
+                    formControlName="remarksforFA"></textarea>
+            </div>
+
+            <div class="m-2">
+                <label class="label-name">Signature : </label>
+                <input id="sign" type="text" class="form-control" formControlName="signatureForFA">
+            </div>
+            <div class="m-2">
+                <label class="label-name">Date : </label>
+                <input id="date" type="text" class="form-control" formControlName="dateOfFA" readonly>
+            </div>
+
+            <div class="footerButtons">
+                <button type="button" routerLink="/payroll/monthlysalary" class="btn btn-danger m-1">Back</button>
+
+                <button type="button" class="btn btn-success m-1" *ngIf="submit" (click)="monthlySalaryEdit()"
+                    [disabled]="EditRemarksFormFA.invalid">Approve</button>
+
+                <!-- <button *ngIf="this.roleName =='AO' && isRevert" type="button"  class="btn btn-danger m-1" (click)="revertTerm()"
+                [disabled]="EditRemarksFormDCAO.invalid && isRevert">Revert</button> -->
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

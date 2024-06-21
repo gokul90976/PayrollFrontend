@@ -1,0 +1,602 @@
+
+
+<main>
+ 
+    <section class="assitant_page" *ngIf="role === 'DA'">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header style="color: #643843;font-size: 20px;">
+                    DA
+                </mat-expansion-panel-header>
+                <section class="main-content">
+                    <div class="filter-row mb-4">
+                        <div class="header-row mb-4 d-flex justify-content-between align-items-center">
+                            <!-- Left buttons: Excel and PDF -->
+                            <div class="d-flex">
+                                <button class="btn excelBtn me-2" id="excel" (click)="downloadExcel()">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                                            <path
+                                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                                        </svg>
+                                    </span> Excel
+                                </button>
+                                <button class="btn btn-light pdfBtn" (click)="downloadPDF()">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                                            class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                                            <path
+                                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                                        </svg>
+                                    </span> PDF
+                                </button>
+                            </div>
+                    
+                            <!-- Right button: New Salary -->
+                            <div style="margin-left: 900px;">
+                                <button class="btn btn-light add-dataBtn" routerLink="/payroll/newmonthlysalary">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                        </svg>
+                                    </span> New Salary
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="search-container">
+                        <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                            <mat-label style="font-weight: bold;">Year</mat-label>
+                            <mat-select #matSelect (selectionChange)="onYearSelect()" multiple>
+                                <!-- <mat-option [value]="'selectAll'">All</mat-option> -->
+                                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="search-container">
+                        <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                            <mat-label style="font-weight: bold;">Month</mat-label>
+                            <mat-select multiple [(value)]="selectedMonths" [disabled]="isDisabled"
+                                (selectionChange)="onMonthSelect()" multiple>
+                                <!-- <mat-option [value]="'selectAll'">All</mat-option> -->
+                                <mat-option *ngFor="let month of Months" [value]="month">{{ month }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="card">
+                        <table mat-table [dataSource]="filteredDataSource" matSort class="application-table">
+                            <tr>
+                                <th colspan="6" style="text-align: center;">Common Header</th>
+                            </tr>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="sno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    S.No. </th>
+                                <td mat-cell *matCellDef="let employeepayroll index as i"> {{ i + 1 }} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="voucherNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Paybill No</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.voucherNo}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paymentType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Type</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.paymentType}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Financial Year & Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.finacionalYearDate}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_earning">
+                                <th mat-header-cell *matHeaderCellDef> Total Earning </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalEarning}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_deductions">
+                                <th mat-header-cell *matHeaderCellDef> Total Deductions </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalDeductions}} </td>
+                            </ng-container>
+
+                            <!-- Scheme Name Column -->
+                            <ng-container matColumnDef="net_salary">
+                                <th mat-header-cell *matHeaderCellDef> Net Salary </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.netPay}} </td>
+                            </ng-container>
+
+                            <!-- Action Column -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action </th>
+                                <td mat-cell *matCellDef="let scheme" class="p-0">
+                                    <div class="d-flex justify-content-evenly">
+                                        <a matTooltip="View" class="action" style="color: #20b1f9;"><mat-icon
+                                                style="font-size: 22px;cursor: pointer;"
+                                                (click)="edit('view',scheme.voucherNo)">visibility</mat-icon></a>
+                                        <a matTooltip="Edit" class="action" style="color: #20b1f9;"
+                                            *ngIf="scheme.statusDA == 'Reverted'"><mat-icon
+                                                style="font-size: 22px;cursor: pointer;"
+                                                (click)="edit('edit',scheme.voucherNo)"
+                                                routerLink="/payroll/newmonthlysalary">edit</mat-icon></a>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th> -->
+                            <!-- <td mat-cell *matCellDef="let scheme"> {{scheme.status}} </td>
+                                <td mat-cell *matCellDef="let scheme" style="color: red;" *ngIf="scheme.status == 'Reverted'"> {{scheme.status}} </td> -->
+                            <!-- <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                    <td mat-cell *matCellDef="let scheme" [style.color]="scheme.status === 'Reverted' ? 'red' : (scheme.status === 'Approved by FA' ? 'green' : 'initial') : (scheme.status === 'Waiting for FA Approval' ? 'Active')">
+                                        {{ scheme.status }}
+                                    </td>
+                                </ng-container> -->
+
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                <td mat-cell *matCellDef="let scheme" [ngStyle]="{
+                                    'color': scheme.statusDA === 'Reverted' ? 'red' : 
+                                             (scheme.statusDA === 'Approved' ? 'green' : 
+                                             (scheme.statusDA === 'Active' ? 'blue' : 'initial')),
+                                    'font-weight': scheme.statusDA === 'Reverted' || scheme.statusDA === 'Approved' || scheme.statusDA === 'Active' ? 'bold' : 'normal'
+                                }">
+                                    {{scheme.statusDA}}
+                                </td>
+
+
+
+
+                            </ng-container>
+
+                            <!-- </ng-container> -->
+
+
+                            <tr mat-header-row *matHeaderRowDef="schemesTableColumns"></tr>
+                            <tr mat-row *matRowDef="let scheme; columns: schemesTableColumns;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="9">No data matching the filter </td>
+                            </tr>
+                        </table>
+
+
+                        <mat-paginator [pageSizeOptions]="[50,100,150,200]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </section>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </section>
+
+    <!------------------------------------------------------------------------------>
+
+    <section class="assitant_page" *ngIf="role === 'AO'">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    AO
+                </mat-expansion-panel-header>
+                <section class="main-content">
+                    <!-- <div class="header-row mb-4">
+                        <h3 class="sub-heading">AO</h3>
+                    </div> -->
+                    <div class="filter-row mb-4">
+                        <div class="col-6">
+                            <div class="search-container">
+                                <div>
+                                    <input matInput #input type="text" id="search-input" class="search-input"
+                                        placeholder="Search..." (keyup)="filterDataSearch($event)">
+                                    <div class="search-icon">
+                                        <mat-icon>search</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-container">
+                        <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                            <mat-label>Year</mat-label>
+                            <mat-select #matSelect (selectionChange)="onYearSelect()" multiple>
+                                <!-- <mat-option [value]="'selectAll'">All</mat-option> -->
+                                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="search-container">
+                        <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                            <mat-label>Month</mat-label>
+                            <mat-select multiple [(value)]="selectedMonths" [disabled]="isDisabled"
+                                (selectionChange)="onMonthSelect()" multiple>
+                                <!-- <mat-option [value]="'selectAll'">All</mat-option> -->
+                                <mat-option *ngFor="let month of Months" [value]="month">{{ month }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="card">
+                        <table mat-table [dataSource]="filteredDataSource" matSort class="application-table">
+                            <tr>
+                                <th colspan="6" style="text-align: center;">Common Header</th>
+                            </tr>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="sno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    S.No. </th>
+                                <td mat-cell *matCellDef="let employeepayroll index as i"> {{ i + 1 }} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="voucherNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Paybill No</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.voucherNo}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Financial Year & Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.finacionalYearDate}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.date}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paymentType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Type</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.paymentType}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <!-- <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.dafrom}} </td>
+                            </ng-container> -->
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_earning">
+                                <th mat-header-cell *matHeaderCellDef > Total Earning </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalEarning}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_deductions">
+                                <th mat-header-cell *matHeaderCellDef > Total Deductions </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalDeductions}} </td>
+                            </ng-container>
+
+                            <!-- Scheme Name Column -->
+                            <ng-container matColumnDef="net_salary">
+                                <th mat-header-cell *matHeaderCellDef > Net Pay </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.netPay}} </td>
+                            </ng-container>
+
+                            <!-- Action Column -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action </th>
+                                <td mat-cell *matCellDef="let scheme" class="p-0">
+                                    <div class="d-flex justify-content-evenly">
+                                        <a class="action" style="color: #20b1f9;"><mat-icon
+                                                style="font-size: 22px;cursor: pointer;"
+                                                (click)="edit('view',scheme.voucherNo)">visibility</mat-icon></a>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.status}}</td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                <td mat-cell *matCellDef="let scheme" [ngStyle]="{
+                                    'color': scheme.statusAO === 'Reverted' ? 'red' : 
+                                             (scheme.statusAO === 'Approved' ? 'green' : 
+                                             (scheme.statusAO === 'Active' ? 'blue' : 
+                                             (scheme.statusAO === 'Pending' ? 'chocolate' : 'initial'))),
+                                    'font-weight': scheme.statusAO === 'Reverted' || scheme.statusAO === 'Approved' || scheme.statusAO === 'Active' || scheme.statusAO === 'Pending' ? 'bold' : 'normal'
+                                }">
+                                    {{scheme.statusAO}}
+                                </td>
+
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="schemesTableColumns"></tr>
+                            <tr mat-row *matRowDef="let scheme; columns: schemesTableColumns;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No data matching the filter </td>
+                            </tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[5,10,15,20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </section>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </section>
+
+    <!-------------------------------------------------------------------------->
+
+
+    <section class="assitant_page" *ngIf="role === 'DCAO'">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    DCAO
+                </mat-expansion-panel-header>
+                <section class="main-content">
+                    <div class="filter-row mb-4">
+                        <div class="col-6">
+                            <div class="search-container">
+                                <div>
+                                    <input matInput #input type="text" id="search-input" class="search-input"
+                                        placeholder="Search..." (keyup)="filterDataSearchDCAO($event)">
+                                    <div class="search-icon">
+                                        <mat-icon>search</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <table mat-table [dataSource]="allApplicationDataSource" matSort class="application-table">
+                            <tr>
+                                <th colspan="6" style="text-align: center;">Common Header</th>
+                            </tr>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="sno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    S.No. </th>
+                                <td mat-cell *matCellDef="let employeepayroll index as i"> {{ i + 1 }} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="voucherNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Paybill No</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.voucherNo}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Financial Year & Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.finacionalYearDate}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.date}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paymentType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Type</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.paymentType}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <!-- <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.dafrom}} </td>
+                            </ng-container> -->
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_earning">
+                                <th mat-header-cell *matHeaderCellDef > Total Earning </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalEarning}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_deductions">
+                                <th mat-header-cell *matHeaderCellDef > Total Deductions </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalDeductions}} </td>
+                            </ng-container>
+
+                            <!-- Scheme Name Column -->
+                            <ng-container matColumnDef="net_salary">
+                                <th mat-header-cell *matHeaderCellDef > Net Salary </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.netPay}} </td>
+                            </ng-container>
+
+                            <!-- Action Column -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action </th>
+                                <td mat-cell *matCellDef="let scheme" class="p-0">
+                                    <div class="d-flex justify-content-evenly">
+                                        <a class="action" style="color: #20b1f9;"><mat-icon
+                                                style="font-size: 22px;cursor: pointer;"
+                                                (click)="edit('view',scheme.nid)">visibility</mat-icon></a>
+
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.status}}</td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                <td mat-cell *matCellDef="let scheme" [ngStyle]="{
+                                    'color': scheme.statusDCAO === 'Reverted' ? 'red' : 
+                                             (scheme.statusDCAO === 'Approved' ? 'green' : 
+                                             (scheme.statusDCAO === 'Active' ? 'blue' : 
+                                             (scheme.statusDCAO === 'Pending' ? 'chocolate' : 'initial'))),
+                                    'font-weight': scheme.statusDCAO === 'Reverted' || scheme.statusDCAO === 'Approved' || scheme.statusDCAO === 'Active' || scheme.statusDCAO === 'Pending' ? 'bold' : 'normal'
+                                }">
+                                    {{scheme.statusDCAO}}
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="schemesTableColumns"></tr>
+                            <tr mat-row *matRowDef="let scheme; columns: schemesTableColumns;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No data matching the filter </td>
+                            </tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[5,10,15,20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </section>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </section>
+
+    <!--------------------------------------------------------------->
+
+    <section class="assitant_page" *ngIf="role === 'FA'">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    FA
+                </mat-expansion-panel-header>
+                <section class="main-content">
+                    <div class="filter-row mb-4">
+                        <div class="col-6">
+                            <div class="search-container">
+                                <div>
+                                    <input matInput #input type="text" id="search-input" class="search-input"
+                                        placeholder="Search..." (keyup)="filterDataSearchFA($event)">
+                                    <div class="search-icon">
+                                        <mat-icon>search</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <table mat-table [dataSource]="allApplicationDataSource" matSort class="application-table">
+                            <tr>
+                                <th colspan="6" style="text-align: center;">Common Header</th>
+                            </tr>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="sno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    S.No. </th>
+                                <td mat-cell *matCellDef="let employeepayroll index as i"> {{ i + 1 }} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="voucherNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Paybill No</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.voucherNo}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Financial Year & Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.finacionalYearDate}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.date}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paymentType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Type</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.paymentType}} </td>
+                            </ng-container>
+                            <!-- Division Column -->
+                            <!-- <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.dafrom}} </td>
+                            </ng-container> -->
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_earning">
+                                <th mat-header-cell *matHeaderCellDef > Total Earning </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalEarning}} </td>
+                            </ng-container>
+
+                            <!-- Division Column -->
+                            <ng-container matColumnDef="total_deductions">
+                                <th mat-header-cell *matHeaderCellDef > Total Deductions </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.totalDeductions}} </td>
+                            </ng-container>
+
+                            <!-- Scheme Name Column -->
+                            <ng-container matColumnDef="net_salary">
+                                <th mat-header-cell *matHeaderCellDef > Net Salary </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.netPay}} </td>
+                            </ng-container>
+
+                            <!-- Action Column -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action </th>
+                                <td mat-cell *matCellDef="let scheme" class="p-0">
+                                    <div class="d-flex justify-content-evenly"
+                                        *ngIf="scheme.statusFA == 'Pending' || scheme.statusFA == 'Approved'">
+                                        <a class="action" style="color: #20b1f9;"><mat-icon
+                                                style="font-size: 22px;cursor: pointer;"
+                                                (click)="edit('view',scheme.nid)">visibility</mat-icon></a>
+
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let scheme"> {{scheme.status}}</td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                <td mat-cell *matCellDef="let scheme" [ngStyle]="{
+                                    'color': scheme.statusFA === 'Reverted' ? 'red' : 
+                                             (scheme.statusFA === 'Approved' ? 'green' : 
+                                             (scheme.statusFA === 'Active' ? 'blue' : 
+                                             (scheme.statusFA === 'Pending' ? 'chocolate' : 'initial'))),
+                                    'font-weight': scheme.statusFA === 'Reverted' || scheme.statusFA === 'Approved' || scheme.statusFA === 'Active' || scheme.statusFA === 'Pending' ? 'bold' : 'normal'
+                                }">
+                                    {{scheme.statusFA}}
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="schemesTableColumns"></tr>
+                            <tr mat-row *matRowDef="let scheme; columns: schemesTableColumns;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No data matching the filter </td>
+                            </tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[5,10,15,20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </section>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </section>
+
+</main>

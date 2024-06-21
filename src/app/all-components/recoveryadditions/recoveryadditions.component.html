@@ -1,0 +1,126 @@
+<ngx-spinner type="ball-scale-multiple">Please wait Until the Loading Completed...</ngx-spinner>
+
+<section class="main-content">
+    <div class="header-row mb-4">
+        <h3 class="sub-heading">Recoveries Additions</h3>
+    </div>
+
+    <div class="filter-row mb-4 float-right">
+        <div class="header-row mb-4 d-flex justify-content-between align-items-center">
+            <div class="d-flex">
+                <button class="btn excelBtn me-2" id="excel" (click)="downloadExcel()">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                            <path
+                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                        </svg>
+                    </span> Excel
+                </button>
+                <button class="btn btn-light pdfBtn" (click)="downloadPDF()">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                            class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                            <path
+                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                        </svg>
+                    </span> PDF
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="filter-row mb-4">
+        <div class="col-6">
+            <div class="search-container">
+                <div>
+                    <input matInput #input type="text" id="search-input" class="search-input" placeholder="Search..."
+                        (keyup)="filterData($event)">
+                    <div class="search-icon">
+                        <mat-icon>search</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: end;">
+            <button class="btn btn-light add-dataBtn" routerLink="/payroll/newrecoveryaddition">
+                <span><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg></span>New Recoveries Addition</button>
+        </div>
+    </div>
+    <div class="card">
+        <table mat-table [dataSource]="allRecoveryadditionDataSource" matSort class="application-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="Sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let recoveryadditions index as i"> {{ i + 1 }} </td>
+                <!-- <td mat-cell *matCellDef="let recoveryadditions index as i"> {{ getSno(recoveryadditions, i) }} </td> -->
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="Empid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp ID </th>
+                <td mat-cell *matCellDef="let recoveryadditions"> {{recoveryadditions.employeeId}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="Empname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let recoveryadditions"> {{recoveryadditions.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="Bp">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>
+                <td mat-cell *matCellDef="let recoveryadditions"> {{recoveryadditions.basicPay}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="recoriesList">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Recoveries List </th>
+                <td mat-cell *matCellDef="let recoveryadditions">
+                    <div *ngFor="let item of recoveryadditions.recoveryDataAdd">{{ item.recovery }}</div>
+                </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="totalDemand">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Demand </th>
+                <td mat-cell *matCellDef="let recoveryadditions">
+                    <div *ngFor="let item of recoveryadditions.recoveryDataAdd">{{ item.totalDemand }}</div>
+                </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="ACTION">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let recoveryadditions" class="p-0">
+                    <div class="d-flex justify-content-evenly">
+                        <a matTooltip="View" style="color: #A87C7C;"
+                            (click)="edit('view',recoveryadditions.recoveryId,recoveryadditions.employeeId)"><mat-icon
+                                style="font-size: 22px;cursor: pointer;">visibility</mat-icon></a>
+
+                        <a matTooltip="Edit" style="color: #76ABAE;"
+                            (click)="edit('edit',recoveryadditions.recoveryId,recoveryadditions.employeeId)"><mat-icon
+                                style="font-size: 22px;cursor: pointer;">edit</mat-icon></a>
+
+                        <a matTooltip="Delete" style="color: #f00b0b;" (click)="delete(recoveryadditions)"><mat-icon
+                                style="font-size: 22px;cursor: pointer;">delete</mat-icon></a>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="RecoveryadditionTableColumns"></tr>
+            <tr mat-row *matRowDef="let recoveryadditions; columns: RecoveryadditionTableColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter "{{input.value}}"</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[15,25,40,60]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+</section>

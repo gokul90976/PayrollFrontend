@@ -1,0 +1,149 @@
+<div class="home-container" [class.home-is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="home-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 style="color: #161f6d;">Payroll Management</h1>
+    <div style="margin-left: 480px;">
+      <img src="../../../assets/images/tnhb_logo.png" alt="tnhb_logo" class="img-fluid" id="tnhb-logo">
+    </div>
+    <span class="home-spacer"></span>
+    <div style="display: flex;align-items: center;" [matMenuTriggerFor]="menu">
+      <h4 style="color: #161f6d;">{{role}}</h4>&nbsp;
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <mat-menu #menu="matMenu">
+      <div class="matMenu" (click)="logout()">
+        <mat-icon>logout</mat-icon><span>Logout</span>
+      </div>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="home-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" opened="true"
+      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+
+      <mat-nav-list>
+
+
+        <!--Employee Payroll-->
+
+        <mat-list-item *ngIf="role == 'DA'">
+          <button routerLink="/payroll/employeepayroll" class="button-emp" routerLinkActive="active"
+            mat-button><mat-icon>home</mat-icon>
+            Employee Payroll
+          </button>
+        </mat-list-item>
+
+        <!--Calculations-->
+
+        <mat-expansion-panel class="custom-expansion-panel" *ngIf="role == 'DA'">
+          <!-- <mat-icon>calculate</mat-icon> -->
+
+          <mat-expansion-panel-header style="color: white;">
+            <mat-panel-title class="b"> <mat-icon>book</mat-icon> &nbsp;Calculations</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-list>
+            <mat-list-item>
+              <button routerLink="/payroll/professionTax" routerLinkActive="active" mat-button>
+                <mat-icon>note</mat-icon>
+                Profession
+              </button>
+            </mat-list-item>
+            <!-- <mat-list-item>
+              <button routerLink="/payroll/incomeTax" routerLinkActive="active" mat-button>
+                <mat-icon>note</mat-icon>
+                Income
+              </button>
+            </mat-list-item> -->
+            <mat-list-item>
+              <button routerLink="/payroll/Dallowance" routerLinkActive="active" mat-button>
+                <mat-icon>note</mat-icon>
+                DA
+              </button>
+            </mat-list-item>
+            <mat-list-item>
+              <button routerLink="/payroll/hraList" routerLinkActive="active" mat-button>
+                <mat-icon>note</mat-icon>
+                HRA
+              </button>
+            </mat-list-item> <mat-list-item>
+              <button routerLink="/payroll/ccaList" routerLinkActive="active" mat-button>
+                <mat-icon>note</mat-icon>
+                CCA
+              </button>
+            </mat-list-item>
+            <mat-list-item>
+              <button routerLink="/payroll/concessional" routerLinkActive="active" mat-button>
+                <mat-icon>Concessional</mat-icon>
+                Concessional
+              </button>
+            </mat-list-item>
+            <mat-list-item>
+              <button routerLink="/payroll/percentage" routerLinkActive="active" mat-button>
+                <mat-icon>Percentages %</mat-icon>
+                Percentages %
+              </button>
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+
+        <!--Recovery Addition-->
+
+        <mat-list-item *ngIf="role == 'DA'">
+          <button routerLink="/payroll/recoveryaddition" class="button-ra" routerLinkActive="active"
+            mat-button><mat-icon>add_to_queue</mat-icon>
+            Recovery Addition
+          </button>
+        </mat-list-item>
+
+        <!--Monthly Salary-->
+
+        <mat-list-item>
+          <button routerLink="/payroll/monthlysalary" class="button-ms"
+            mat-button><mat-icon>credit_card
+            </mat-icon>
+             Salaries
+          </button>
+        </mat-list-item>
+
+          <!--EL Surrender-->
+<!-- 
+          <mat-list-item>
+            <button routerLink="/payroll/elSurrender" class="button-emp" routerLinkActive="active"
+              mat-button><mat-icon>credit_card
+              </mat-icon>
+              EL Surrender
+            </button>
+          </mat-list-item> -->
+          
+        <!--Reports-->
+
+        <mat-expansion-panel class="custom-expansion-panel button-rep">
+          <mat-expansion-panel-header style="color: white;">
+            <mat-panel-title class="b"> <mat-icon>book</mat-icon> &nbsp;Reports</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item>
+              <button routerLink="/payroll/reports"  mat-button>
+                <mat-icon>note</mat-icon>
+                Recovery Reports
+              </button>
+            </mat-list-item>
+            <mat-list-item>
+              <button routerLink="/payroll/payslip"  mat-button>
+                <mat-icon>note</mat-icon>
+                Payslip
+              </button>
+            </mat-list-item>
+            
+          </mat-list>
+        </mat-expansion-panel>
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

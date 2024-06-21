@@ -1,0 +1,769 @@
+<main id="main">
+    <!-- <h1 class="sub-heading" style="text-align: center;font-size:25px !important ;">Create Employee Payroll</h1> -->
+    <section>
+        <h2>Part - A</h2>
+        <h2 class="sub-heading"> Detail Of Employees</h2>
+
+        <!--Employee-->
+
+        <section>
+            <form class="row" [formGroup]="employeeForm" class="empIDstyle">
+                <div>
+                    <label for="empID" class="form-label">Employee ID :</label>
+                    <input id="empID" type="text" class="form-control" formControlName="employeeId">
+                    <small
+                        *ngIf="(employeeForm.controls['employeeId'].invalid && employeeForm.controls['employeeId'].touched)">*
+                        EmployeeID is Required
+                    </small>
+                </div>
+            </form>
+        </section>
+
+        <form [formGroup]="employeeForm" class="empForm">
+
+            <div class="mb-3">
+                <label for="empName" class="form-label">Employee Name :</label>
+                <input id="empName" type="text" class="form-control" formControlName="employeeName">
+            </div>
+
+            <div class="mb-3">
+                <label for="dob" class="form-label">Office Code :</label>
+                <input id="dob" type="text" class="form-control" formControlName="officeCode">
+            </div>
+
+            <div class="mb-3">
+                <label for="doj" class="form-label">Office Name :</label>
+                <input id="doj" type="text" class="form-control" formControlName="officeName">
+            </div>
+
+            <div class="mb-3">
+                <label for="aadharNo" class="form-label">Designation code :</label>
+                <input id="aadharNo" type="text" class="form-control" formControlName="designationCode">
+            </div>
+
+            <div class="mb-3">
+                <label for="panno" class="form-label">Designation name :</label>
+                <input id="panno" type="text" class="form-control" formControlName="designationName">
+            </div>
+
+            <div class="mb-3">
+                <label for="officeCode" class="form-label">Pan No :</label>
+                <input id="officeCode" type="text" class="form-control" formControlName="panNo">
+            </div>
+
+            <div class="mb-3">
+                <label for="officeName" class="form-label">Aadhar No :</label>
+                <input id="officeName" type="text" class="form-control" formControlName="aadharNo">
+            </div>
+
+            <div class="mb-3">
+                <label for="cadreCode" class="form-label">Mobile No :</label>
+                <input id="cadreCode" type="text" class="form-control" formControlName="mobileNo">
+            </div>
+
+            <div class="mb-3">
+                <label for="cadreName" class="form-label">Email ID :</label>
+                <input id="cadreName" type="text" class="form-control" formControlName="emailId">
+            </div>
+
+            <div class="mb-3">
+                <label for="basicPay" class="form-label">Differently Abled :</label>
+                <input id="basicPay" type="text" class="form-control" formControlName="differentlyAbled">
+            </div>
+
+            <div class="mb-3">
+                <label for="scaleofPay" class="form-label">Date of Birth :</label>
+                <input id="scaleofPay" type="text" class="form-control" formControlName="dateOfBirth">
+            </div>
+
+            <div class="mb-3">
+                <label for="scaleofPay" class="form-label">Date of Joining :</label>
+                <input id="scaleofPay" type="text" class="form-control" formControlName="dateOfJoiningService">
+            </div>
+
+            <div class="mb-3">
+                <label for="disability" class="form-label">Level as per pay matrix :</label>
+                <input id="disability" type="text" class="form-control align" formControlName="levelAsPerPayMatrix">
+            </div>
+
+            <div class="mb-3">
+                <label for="cell" class="form-label">Basic Pay :</label>
+                <input id="cell" type="text" class="form-control align" formControlName="basicPay">
+            </div>
+
+
+            <div class="mb-3">
+                <label for="sectionSelect" class="form-label">Level as per cell matrix :</label>
+                <input id="disability" type="text" class="form-control align" formControlName="levelAsPerCellMatrix">
+                <small
+                    *ngIf="(employeeForm.controls['levelAsPerCellMatrix'].invalid && employeeForm.controls['levelAsPerCellMatrix'].touched)">*
+                    Level as per cell matrix is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="level" class="form-label">Scale of pay :</label>
+                <input id="level" type="text" class="form-control align" formControlName="scaleOfPay">
+            </div>
+
+            <div class="mb-3">
+                <label for="rent" class="form-label">Increment due date :</label>
+                <input id="disability" type="text" class="form-control" formControlName="incrementDueDate">
+                <small
+                    *ngIf="(employeeForm.controls['incrementDueDate'].invalid && employeeForm.controls['incrementDueDate'].touched)">*
+                    Increment due date
+                    is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="dor" class="form-label">Date of retirement :</label>
+                <input id="disability" type="text" class="form-control" formControlName="dateOfRetirement">
+                <small
+                    *ngIf="(employeeForm.controls['dateOfRetirement'].invalid && employeeForm.controls['dateOfRetirement'].touched)">*
+                    Date of retirement is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="bankName" class="form-label">Transfer office code :</label>
+                <input id="bankName" type="text" class="form-control" formControlName="transferOfficeCode">
+                <small
+                    *ngIf="(employeeForm.controls['transferOfficeCode'].invalid && employeeForm.controls['transferOfficeCode'].touched)">*
+                    Transfer office code is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="bankBranchName" class="form-label">Transfer office name :</label>
+                <input id="bankBranchName" type="text" class="form-control" formControlName="transferOfficeName">
+                <small
+                    *ngIf="(employeeForm.controls['transferOfficeName'].invalid && employeeForm.controls['transferOfficeName'].touched)">*
+                    Transfer office name is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="bankAcNo" class="form-label">Date of Joining (Transfer) :</label>
+                <input id="bankAcNo" type="text" class="form-control" formControlName="dateOfJoiningTransfer">
+                <small
+                    *ngIf="(employeeForm.controls['dateOfJoiningTransfer'].invalid && employeeForm.controls['dateOfJoiningTransfer'].touched)">*
+                    Date of Joining is Required</small>
+
+            </div>
+            <div class="mb-3">
+                <label for="ifsccode" class="form-label">Payment Status :</label>
+                <input id="ifsccode" type="text" class="form-control" formControlName="paymentStatus">
+                <small
+                    *ngIf="(employeeForm.controls['paymentStatus'].invalid && employeeForm.controls['paymentStatus'].touched)">*
+                    Payment Status is Required</small>
+            </div>
+            <div class="mb-3">
+                <label for="ifsccode" class="form-label">No of Working Days :</label>
+                <input id="ifsccode" type="text" class="form-control" formControlName="numberOfWorkingDays">
+                <small
+                    *ngIf="(employeeForm.controls['numberOfWorkingDays'].invalid && employeeForm.controls['numberOfWorkingDays'].touched)">*
+                    Total Working Days is Required</small>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="bankName" class="form-label">Bank name:</label>
+                        <input id="bankName" type="text" placeholder="Enter Bank Name" class="form-control"
+                            formControlName="bankName">
+                        <small
+                            *ngIf="(employeeForm.controls['bankName'].invalid && employeeForm.controls['bankName'].touched)">
+                            * Bank name is required
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="bankBranchName" class="form-label">Bank branch name:</label>
+                        <input id="bankBranchName" type="text" class="form-control" placeholder="Bank Branch name"
+                            formControlName="bankBranchName">
+                        <small
+                            *ngIf="(employeeForm.controls['bankBranchName'].invalid && employeeForm.controls['bankBranchName'].touched)">
+                            * Bank branch name is required
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="bankAcNo" class="form-label">Bank A/C No:</label>
+                        <input id="bankAcNo" type="text" class="form-control" placeholder="Acc No"
+                            formControlName="bankAcNo" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                        <small
+                            *ngIf="(employeeForm.controls['bankAcNo'].invalid && employeeForm.controls['bankAcNo'].touched)">
+                            * Bank A/C No is required
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="bankIFSC" class="form-label">Bank IFSC:</label>
+                        <input id="bankIFSC" type="text" class="form-control" formControlName="bankIFSC"
+                            placeholder="Bank IFSC">
+                        <small
+                            *ngIf="(employeeForm.controls['bankIFSC'].invalid && employeeForm.controls['bankIFSC'].touched)">
+                            * Bank IFSC is required
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="rent" class="form-label">Rent :</label>
+                        <select id="rent" class="form-select" formControlName="rent" (change)="rentStatus($event)">
+                            <option value="select">--Select--</option>
+                            <option value="Concessional">Concessional</option>
+                            <option value="Notional">Notional</option>
+                            <option value="no">No</option>
+                        </select>
+
+                        <!-- <select [(ngModel)]="selectedValue"   class="form-select" (change)="rentStatus()">
+                            <option *ngFor="let type of rentTypes" [value]="type">{{ type }}</option>
+                          </select> -->
+                        <!-- <small *ngIf="(employeeForm.controls['rent'].invalid && employeeForm.controls['rent'].touched)">* Rent
+                            is Required</small> -->
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="rentOptions" class="form-label">Rent Type :</label>
+                        <select id="rentOptions" class="form-select" formControlName="rentOptions">
+                            <option value="board">Board</option>
+                            <option value="tngrh">TNGRH</option>
+
+                        </select>
+                        <small
+                            *ngIf="(employeeForm.controls['rentOptions'].invalid && employeeForm.controls['rentOptions'].touched)">*
+                            Rent Type
+                            is Required</small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="pfcps" class="form-label">PF/CPS :</label>
+                        <input id="pfcps" type="text" class="form-control" formControlName="pfcps" placeholder="Rs..."
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                        <small
+                            *ngIf="(employeeForm.controls['pfcps'].invalid && employeeForm.controls['pfcps'].touched)">*
+                            Basic Pay is
+                            Required</small>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr>
+
+        <!---Earnings--->
+        <h2>Part - B</h2>
+        <div class="row mb-2">
+            <h2 class="sub-heading col-9">Salary (Earnings)</h2>
+        </div>
+
+        <form class="earnform" [formGroup]="earningForm">
+            <div class="mb-3">
+                <label for="b_p" class="form-label">Basic Pay :</label>
+                <input id="b_p" type="text" class="form-control align" formControlName="basicPayEarning" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['basicPayEarning'].invalid && earningForm.controls['basicPayEarning'].touched)">*
+                    Basic Pay is
+                    Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Personal Pay :</label>
+                <input type="text" class="form-control align" formControlName="personalPay" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" (keyup)="personalGet($event)"
+                    (keypress)="allowDecimal($event)">
+                <small
+                    *ngIf="(earningForm.controls['personalPay'].invalid && earningForm.controls['personalPay'].touched)">*
+                    Personal Pay
+                    is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="splpay" class="form-label">Special Pay :</label>
+                <input id="splpay" type="text" class="form-control align" formControlName="specialPay" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" (keyup)="specialGet($event)">
+                <small
+                    *ngIf="(earningForm.controls['specialPay'].invalid && earningForm.controls['specialPay'].touched)">*
+                    Special
+                    Pay is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="d_a" class="form-label">DA :</label>
+                <input id="d_a" type="text" class="form-control align" formControlName="da" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(earningForm.controls['da'].invalid && earningForm.controls['da'].touched)">* DA is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="hra" class="form-label">HRA :</label>
+                <input id="hra" type="text" class="form-control align" formControlName="hra" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(earningForm.controls['hra'].invalid && earningForm.controls['hra'].touched)">* HRA is
+                    Required</small>
+
+            </div>
+
+
+            <div class="mb-3">
+                <label for="cca" class="form-label">CCA :</label>
+                <input id="cca" type="text" class="form-control align" formControlName="cca" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(earningForm.controls['cca'].invalid && earningForm.controls['cca'].touched)">* CCA is
+                    Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="oca" class="form-label">Medical Allowance :</label>
+                <input id="oca" type="text" class="form-control align" formControlName="medicalAllowance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['medicalAllowance'].invalid && earningForm.controls['medicalAllowance'].touched)">*
+                    Medical Allowance is
+                    Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="c_a" class="form-label">FTA :</label>
+                <input type="text" class="form-control align" formControlName="fta" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(earningForm.controls['fta'].invalid && earningForm.controls['fta'].touched)">* FTA is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Hill Allowance :</label>
+                <input type="text" class="form-control align" formControlName="hillAllowance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['hillAllowance'].invalid && earningForm.controls['hillAllowance'].touched)">*
+                    Hill Allowance is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Winter Allowance :</label>
+                <input type="text" class="form-control align" formControlName="winterAllowance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['winterAllowance'].invalid && earningForm.controls['winterAllowance'].touched)">*
+                    Winter Allowance is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Washing Allowance :</label>
+                <input type="text" class="form-control align" formControlName="washingAllowance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['washingAllowance'].invalid && earningForm.controls['washingAllowance'].touched)">*
+                    Washing Allowance is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Conveyance Allowance (DAP) :</label>
+                <input type="text" class="form-control align" formControlName="conveyanceAllowanceEarnings"
+                    placeholder="Rs..." oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['conveyanceAllowanceEarnings'].invalid && earningForm.controls['conveyanceAllowanceEarnings'].touched)">*
+                    Conveyance Allowance (DAP) is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="cashallow" class="form-label">Cash Allowance :</label>
+                <input id="cashallow" type="text" class="form-control align" formControlName="cashAllowance"
+                    placeholder="Rs...">
+                <small
+                    *ngIf="(earningForm.controls['cashAllowance'].invalid && earningForm.controls['cashAllowance'].touched)">*
+                    Cash Allowance is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Interim Relief :</label>
+                <input type="text" class="form-control align" formControlName="interimRelief" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(earningForm.controls['interimRelief'].invalid && earningForm.controls['interimRelief'].touched)">*
+                    Interim Relief is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Misc 1 :</label>
+                <input type="text" class="form-control align" formControlName="misc1" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(earningForm.controls['misc1'].invalid && earningForm.controls['misc1'].touched)">* Misc 1
+                    is Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="isMD">
+                <label class="form-label">HRR :</label>
+                <input type="text" class="form-control align" formControlName="hrr" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(earningForm.controls['hrr'].invalid && earningForm.controls['hrr'].touched)">*
+                    HRR is
+                    Required</small>
+
+            </div>
+        </form>
+
+        <div>
+            <div [formGroup]="earningCFForm">
+                <div formArrayName="items">
+                    <div class="row" *ngFor="let item of items; let i = index" [formGroupName]="i">
+                        <div class="eranings_customfield">
+                            <label for="New_Custom_Field" class="mt-4">Custom Field {{i + 1}} : </label>
+                            <input class=" form-control my-2" type="text" id="New_Custom_Field" placeholder="Label"
+                                formControlName="customFieldName">
+                            <h1 class="mt-3"> : </h1>
+                            <input class="form-control my-2" id="Custom_Field_Deduction" type="text" placeholder="Rs..."
+                                formControlName="customFieldValue">
+                            <a class="ms-3 mt-2" (click)="deleteEarnButton(i,item)">
+                                <mat-icon style="color: red; margin-top: 10px;">delete</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3 totalEarningFieldsDiv" [formGroup]="earningForm">
+            <label class="form-label"><strong>Total Earnings (Rs.) :</strong></label>
+            <input type="text" [readonly]="true" class="form-control totalEarningFields align"
+                style="background: rgb(237, 230, 215);" formControlName="totalEarning"
+                placeholder="Total Earnings.....">
+        </div>
+
+        <hr class="col-12">
+
+
+        <!----Deductions---->
+
+        <div class="row">
+            <h2 class="sub-heading col-9">Salary (Deductions)</h2>
+
+        </div>
+
+        <form class="deductionform" [formGroup]="deductionForm">
+
+            <div class="mb-3" *ngIf="isPF">
+                <label class="form-label">GPF (Subs) :</label>
+                <input type="text" class="form-control align" formControlName="gpfSub" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['gpfSub'].invalid && deductionForm.controls['gpfSub'].touched)">*
+                    GPF (Subs)
+                    is Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="isPF">
+                <label class="form-label">VPF :</label>
+                <input type="text" class="form-control align" formControlName="vpf" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['vpf'].invalid && deductionForm.controls['vpf'].touched)">*
+                    VPF is Required</small>
+            </div>
+
+            <div class="mb-3" *ngIf="!isPF">
+                <label class="form-label">CPS :</label>
+                <input type="text" class="form-control align" formControlName="cps" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['cps'].invalid && deductionForm.controls['cps'].touched)">* CPS is
+                    Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">FBF :</label>
+                <input type="text" class="form-control align" formControlName="fbf" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['fbf'].invalid && deductionForm.controls['fbf'].touched)">* FBF is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">NHIS :</label>
+                <input type="text" class="form-control align" formControlName="nhis" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['nhis'].invalid && deductionForm.controls['nhis'].touched)">* NHIS
+                    is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="isJoindateValid">
+                <label class="form-label">Special PF :</label>
+                <input type="text" class="form-control align" formControlName="specialPf" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(deductionForm.controls['specialPf'].invalid && deductionForm.controls['specialPf'].touched)">*
+                    Special PF is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">HBA :</label>
+                <input type="text" class="form-control align" formControlName="hba" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" (keyup)="onKeyHBA($event)">
+                <small *ngIf="(deductionForm.controls['hba'].invalid && deductionForm.controls['hba'].touched)">* HBA is
+                    Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">HBF :</label>
+                <input type="text" class="form-control align" formControlName="hbf" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['hbf'].invalid && deductionForm.controls['hbf'].touched)">* HBF is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="rentType && rentstatus =='Notional'">
+                <label class="form-label"> Notional Rent :</label>
+                <input type="text" class="form-control align" formControlName="rentDeductions" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(deductionForm.controls['rentDeductions'].invalid && deductionForm.controls['rentDeductions'].touched)">*
+                    Notional Rent is Required</small>
+            </div>
+
+            <div class="mb-3" *ngIf="rentType && rentstatus =='Concessional'">
+                <label class="form-label"> Concessional Rent :</label>
+                <input type="text" class="form-control align" formControlName="rentDeductions" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['rentDeductions'].invalid && deductionForm.controls['rentDeductions'].touched)">*
+                    Concessional Rent is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Water Charges :</label>
+                <input type="text" class="form-control align" formControlName="waterCharges" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(deductionForm.controls['waterCharges'].invalid && deductionForm.controls['waterCharges'].touched)">*
+                    Water Charges is Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="daStatus">
+                <label class="form-label">Professional Tax :</label>
+                <input type="text" class="form-control align" formControlName="professionalTax" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(deductionForm.controls['professionalTax'].invalid && deductionForm.controls['professionalTax'].touched)">*
+                    Professional Tax is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">One day recovery :</label>
+                <input type="text" class="form-control align" formControlName="oneDayRecovery" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(deductionForm.controls['oneDayRecovery'].invalid && deductionForm.controls['oneDayRecovery'].touched)">*
+                    One day recovery is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Income Tax :</label>
+                <input type="text" class="form-control align" formControlName="incomeTax" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" (keyup)="onKeyIT($event)">
+                <small
+                    *ngIf="(deductionForm.controls['incomeTax'].invalid && deductionForm.controls['incomeTax'].touched)">*
+                    Income Tax is
+                    Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Income Tax Cess :</label>
+                <input type="text" class="form-control align" formControlName="incomeTaxCess" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small
+                    *ngIf="(deductionForm.controls['incomeTaxCess'].invalid && deductionForm.controls['incomeTaxCess'].touched)">*
+                    Income Tax Cess is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">EoE :</label>
+                <input type="text" class="form-control align" formControlName="eoe" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                <small *ngIf="(deductionForm.controls['eoe'].invalid && deductionForm.controls['eoe'].touched)">*
+                    EOE is Required</small>
+            </div>
+
+            <div class="mb-3" *ngIf="isPF">
+                <label class="form-label">GPF Loan :</label>
+                <input type="text" class="form-control align" formControlName="gpfLoan" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['gpfLoan'].invalid && deductionForm.controls['gpfLoan'].touched)">*
+                    GPF Loan is Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="isPF">
+                <label class="form-label">GPF Arrear :</label>
+                <input type="text" class="form-control align" formControlName="gpfArrear" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['gpfArrear'].invalid && deductionForm.controls['gpfArrear'].touched)">*
+                    GPF Arrear is Required</small>
+
+            </div>
+
+            <div class="mb-3" *ngIf="!isPF">
+                <label class="form-label">CPS Arrear :</label>
+                <input type="text" class="form-control align" formControlName="cpsArrear" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['cpsArrear'].invalid && deductionForm.controls['cpsArrear'].touched)">*
+                    CPS Arrear is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Festival Advance :</label>
+                <input type="text" class="form-control align" formControlName="festivalAdvance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['festivalAdvance'].invalid && deductionForm.controls['festivalAdvance'].touched)">*
+                    Festival Advance is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Conveyance Advance :</label>
+                <input type="text" class="form-control align" formControlName="conveyanceAdvance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['conveyanceAdvance'].invalid && deductionForm.controls['conveyanceAdvance'].touched)">*
+                    Conveyance Advance
+                    is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Education Advance :</label>
+                <input type="text" class="form-control align" formControlName="educationAdvance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['educationAdvance'].invalid && deductionForm.controls['educationAdvance'].touched)">*
+                    Education Advance is Required</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Marriage Advance :</label>
+                <input type="text" class="form-control align" formControlName="marriageAdvance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['marriageAdvance'].invalid && deductionForm.controls['marriageAdvance'].touched)">*
+                    Marriage Advance is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Pay Advance :</label>
+                <input type="text" class="form-control align" formControlName="payAdvance" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['payAdvance'].invalid && deductionForm.controls['payAdvance'].touched)">*
+                    Pay Advance is Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Misc-1 :</label>
+                <input type="text" class="form-control align" formControlName="miscDeduction1" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['miscDeduction1'].invalid && deductionForm.controls['miscDeduction1'].touched)">*
+                    Misc-1 is
+                    Required</small>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Misc-2 :</label>
+                <input type="text" class="form-control align" formControlName="miscDeduction2" placeholder="Rs..."
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" readonly>
+                <small
+                    *ngIf="(deductionForm.controls['miscDeduction2'].invalid && deductionForm.controls['miscDeduction2'].touched)">*
+                    Misc-2 is Required</small>
+
+            </div>
+
+        </form>
+
+        <div class="ms-3 mb-2">
+            <div [formGroup]="deductionCFForm">
+                <div formArrayName="itemsDeduct">
+                    <div class="row" *ngFor="let item of itemsDeduct; let i = index" [formGroupName]="i">
+                        <div class="eranings_customfield">
+                            <label for="New_Custom_Field" class="mt-4">Custom Field {{i + 1}} : </label>
+                            <input class=" form-control my-2" type="text" id="New_Custom_Field" placeholder="Label"
+                                formControlName="customFieldName">
+                            <h1 class="mt-3"> : </h1>
+                            <input class="form-control my-2" id="Custom_Field_Deduction" type="text" placeholder="Rs..."
+                                formControlName="customFieldValue">
+                            <a class="ms-3 mt-2" (click)="deletedeductButton(i)">
+                                <mat-icon style="color: red; margin-top: 10px;">delete</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex;flex-direction: column;align-items: flex-end;" [formGroup]="deductionForm">
+            <div class="mb-3 deductionTotalFieldDiv">
+                <label class="form-label"><strong> Total Deductions (Rs.) :</strong></label>
+                <input [readonly]="true" type="text" class="form-control deductionTotalField align"
+                    style="background-color: rgb(237, 230, 215) ;" formControlName="totalDeductions"
+                    placeholder="Total Deductions....">
+            </div>
+            <div class="mb-3 netPayTotalFieldDiv">
+                <label class="form-label"><strong> Pay (Rs.) :</strong></label>
+                <input [readonly]="true" type="text" class="form-control deductionTotalField align"
+                    style="background-color: rgb(237, 230, 215) ;" formControlName="netPay" placeholder="Net Pay....">
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="row">
+        <div class="Deduction_btn col-12">
+            <button type="button"  [mat-dialog-close]="true" class="btn btn-danger m-1">Back</button>
+            <!-- <button type="button" class="btn btn-info m-1" (click)="postNewEmployee()" [disabled]="!areAllFormsValid()"
+                *ngIf="!view">Submit</button> -->
+                <!-- <button type="button" class="btn btn-info m-1" (click)="postNewEmployee()"
+                *ngIf="!view">Submit</button> -->
+        </div>
+    </div>
+</main>

@@ -1,0 +1,42 @@
+
+<section class="main-content">
+    <h2 class="sub-headingg"> DA Edit (DA)</h2>
+
+    <div class="profForm">
+        <div class="row">
+            <div>
+                <form [formGroup]="DAeditForm" (submit)="saveDallowanceTax()">
+                    <div class="row">
+
+
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">Pay Commission : </label>
+                            <input type="text" class="form-control" matInput placeholder="Pay Commission" formControlName="payCommission">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">DA From (Rs.) : </label>
+                            <input type="date" class="form-control" matInput placeholder="DA from" formControlName="from">
+                        </div>
+        
+                        <div class="col-3">
+                            <label for="Total_amount" class="label-name"> DA To (Rs.) : </label>
+                            <input type="date" class="form-control" matInput placeholder="DA to" formControlName="to">
+                        </div>
+        
+                        <div class="col-3">
+                            <label for="Commencement" class="label-name">DA % (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="DA Values" formControlName="daPercentage">
+                        </div>
+        
+                        <div class="col-1 updatebtn">
+                            <button class="btn btn-info" type="submit" [disabled]="!DAeditForm.valid">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+

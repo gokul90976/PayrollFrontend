@@ -1,0 +1,40 @@
+<section class="main-content">
+    <h2 class="sub-headingg"> CCA Edit</h2>
+    <div class="profForm">
+        <div class="row">
+            <div>
+                <form [formGroup]="editForm" (submit)="updateCcaValue()">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name"> Payrange From (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder=" from"
+                                formControlName="ccaFromPay">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Total_amount" class="label-name"> Payrange To (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder=" to"
+                                formControlName="ccaToPay">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Commencement" class="label-name"> First Value (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder=" First Vaalue"
+                                formControlName="ccaFirstValue">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Commencement" class="label-name"> Second Value (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder=" Second Value"
+                                formControlName="ccaSecondValue">
+                        </div>
+
+                        <div class="col-1 updatebtn">
+                            <button class="btn btn-info" type="submit" [disabled]="!editForm.valid">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

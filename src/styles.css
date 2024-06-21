@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.form-select{
+    background-color: #ecf5ff !important;
+ 
+}
+
+.form-control{
+    background-color: #ecf5ff !important;
+}
+
+.mat-mdc-unelevated-button.mat-primary {
+    --mdc-filled-button-container-color: #7b1868;
+    --mdc-filled-button-label-text-color: #fff;
+  
+  }
+  .mat-mdc-unelevated-button.mat-warn {
+    --mdc-filled-button-container-color: #fc3232;
+    --mdc-filled-button-label-text-color: hsl(0, 0%, 100%);
+    font-weight: 600;
+  }
+
+  .mat-mdc-tab-body-content{
+    overflow: none  !important;
+    height: auto !important;
+  }
+
+  .mat-mdc-tab .mdc-tab__content{
+    font-size: 1rem;
+    font-weight: bold;
+    color: #161f6d !important;
+  }
+
+  .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label{
+    color: #161f6d !important;
+  }

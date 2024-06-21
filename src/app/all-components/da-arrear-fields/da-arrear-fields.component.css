@@ -1,0 +1,113 @@
+.main-content {
+    padding: 2rem;
+    background: #a9d2e5ba;
+    margin: 10px;
+    border-radius: 10px;
+    height: 100vh;
+
+}
+.heading {
+    color: #161f6d;
+    font-weight: bold;
+}
+input,select{
+    width: 100px !important;
+}
+.main_recovery{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.sub-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #424769;
+}
+
+span{
+    color: red;font-size: small
+}
+small{
+    color: red;
+    font-weight: bold;
+}
+.form-control{
+    height: auto;
+    width: 130px !important;
+}
+.form-select{
+    width: 130px !important;
+}
+
+h3{
+    font-weight: bold; 
+    margin-top: 5px;
+}
+
+/* -----------------Dynamic form---------------------- */
+.Dynamic_form{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #ccc;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 2px 0px;  
+}
+.main_dynamic_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+
+.col-2 {
+    flex: 0 0 auto;
+    width: 12.5%;
+}
+
+
+.Dynamic_form input{
+    width: 110px;
+}
+select{
+    width: 200px !important;
+    text-align: center;
+}
+.delete_dynamic{
+    display: flex;
+    justify-content: end;
+}
+.Deduction_btn{
+    text-align: center;
+}
+input.ng-touched.ng-invalid{
+    border: red 2px solid;
+}
+svg{
+    color: red;
+}
+
+.label-name{
+    color: #004225;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+}
+
+.form-control{
+    margin-top: 10px;
+}
+
+.form-select{
+    margin-top: 10px;
+
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* Optional: Remove the margin */
+}
+
+

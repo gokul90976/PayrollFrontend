@@ -1,0 +1,64 @@
+<section class="main-content">
+    <h2 class="sub-heading"> Percentage Setup</h2>
+    <div class="profForm">
+        <div class="row">
+            <div>
+                <form [formGroup]="percentageForm" (submit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">HRR : </label>
+                            <input class="form-control" type="text" formControlName="hrrPercentage">
+                            <small
+                                *ngIf="(percentageForm.controls['hrrPercentage'].invalid && percentageForm.controls['hrrPercentage'].touched)">*
+                                HRR % is Required</small>
+                        </div>
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">GPF (subs) : </label>
+                            <input class="form-control" type="text" formControlName="gpfPercentage">
+                            <small
+                                *ngIf="(percentageForm.controls['gpfPercentage'].invalid && percentageForm.controls['gpfPercentage'].touched)">*
+                                GPF % is Required</small>
+                        </div>
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">CPS : </label>
+                            <input class="form-control" type="text" formControlName="cpsPercentage">
+                            <small
+                                *ngIf="(percentageForm.controls['cpsPercentage'].invalid && percentageForm.controls['cpsPercentage'].touched)">*
+                                CPS % is Required</small>
+                        </div>
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">HBF : </label>
+                            <input class="form-control" type="text" formControlName="hbfPercentage">
+                            <small
+                                *ngIf="(percentageForm.controls['hbfPercentage'].invalid && percentageForm.controls['hbfPercentage'].touched)">*
+                                HBF % is Required</small>
+                        </div>
+                        <div class="col-3" style="margin-top: 10px;">
+                            <label for="Doc_num" class="label-name">IT Cess : </label>
+                            <input class="form-control" type="text" formControlName="itcPercentage">
+                            <small
+                                *ngIf="(percentageForm.controls['itcPercentage'].invalid && percentageForm.controls['itcPercentage'].touched)">*
+                                IT Cess % is Required</small>
+                        </div>
+                        <!-- <div class="col-3">
+                            <label for="Doc_num">Interim Relief : </label>
+                            <input class="form-control" type="text" formControlName="interimReliefPercentage">
+                            <small
+                                *ngIf="(percentageForm.controls['interimReliefPercentage'].invalid && percentageForm.controls['interimReliefPercentage'].touched)">*
+                                Interim Relief % is Required</small>
+                        </div> -->
+
+                        <!-- <div class="col-1 updatebtn">
+                            <button class="btn btn-primary" type="submit" (click)="savePercent()">Save</button>
+                        </div> -->
+
+                        <div class="col-1 updatebtn" style="margin-top: 30px;">
+                            <button class="btn btn-info" type="submit"
+                                [disabled]="!percentageForm.valid">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

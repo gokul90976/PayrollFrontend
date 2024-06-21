@@ -1,0 +1,285 @@
+<main class="main-content">
+    <section>
+        <!-- <h3>Employee</h3> -->
+        <h3 class="sub-heading">Pay Arrear</h3>
+    </section>
+
+    <div class="row">
+        <div class="col-md-8" style="display: flex;gap: 10px;flex-direction: row;">
+            <div class="m-2 d-flex">
+                <label for="emp_name" class="label-name mt-2 mx-2"><strong>Employee Name:</strong></label>
+                <input class="form-controlin ms-1" type="text" id="emp_name" [(ngModel)]="empName" readonly style="width: 250px;">
+            
+                <label for="emp_id" class="label-name mt-2 ms-1 ms-4"><strong>Employee Id:</strong></label>
+                <input class="form-controlin mx-2" type="text" id="emp_id" [(ngModel)]="employeeId" readonly style="width: 250px;">
+            
+                <label for="desg_name" class="label-name mt-2 ms-1 ms-4"><strong>Designation Name:</strong></label>
+                <input class="form-controlin mx-2" type="text" id="desg_name" [(ngModel)]="desgName" readonly style="width: 250px;">
+            </div>
+            
+        </div>
+        <!-- <div class="col-md-6">
+            
+        </div> -->
+    </div>
+
+    <div [formGroup]="payArrearForm" style="margin-top: 20px;">
+        <div formArrayName="itemsRec"> 
+            <div class="Dynamic_form-container">
+
+                <div class="Dynamic_form row" *ngFor="let item of itemsRec; let i = index" [formGroupName]="i">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="date-field">
+                                <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                                <input class="form-control date-input" type="date" (input)="resetTodate(i)" formControlName="fromDate">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="date-field">
+                                <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                                <input class="form-control date-input" (input)="onSubmit(i)" type="date" formControlName="toDate">
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-start justify-content-start">
+                            <a matTooltip="Add" (click)="addRecoveryButton()" *ngIf="i<1 && !view" class="mr-2">
+                                <mat-icon style="color: blue; font-weight: bolder;">add_circle</mat-icon>
+                            </a>
+                            <a matTooltip="Delete" (click)="deleteRecoveryButton(i)" *ngIf="i>=1 && !view">
+                                <mat-icon style="color: red;">delete</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                    
+
+
+                    <!-- <div class="form-row "> -->
+                    <h3 class="sub-heading" style="margin-top: 20px;">To be Drawn</h3>
+
+
+                    <div class="col-2">
+                        <label for="Doc_num" class="label-name">Basic Pay : </label><br>
+                        <input class="form-control align" type="number" id="basicPay" formControlName="basicPay"  required>
+                        <div *ngIf="payArrearForm.get('basicPay').errors?.['required'] && payArrearForm.get('basicPay').touched"
+                        class="text-danger" (input)="decimalInput('payArrearForm','basicPay',i)"
+                        (blur)="formatToTwoDecimals('payArrearForm','basicPay',i)" (keyup)="tobeDrawn(i)">
+                        Basic Pay is required.
+                    </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="instalment" class="label-name">Personal Pay : </label>
+                        <input class="form-control align" type="number" id="personalPay" formControlName="personalPay"
+                            (keyup)="tobeDrawn(i)" required>
+                            <div *ngIf="payArrearForm.get('personalPay').errors?.['required'] && payArrearForm.get('personalPay').touched"
+                            class="text-danger">
+                            Personal Pay is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">Special Pay : </label>
+                        <input class="form-control align" type="number" id="specialPay" formControlName="specialPay"
+                            (keyup)="tobeDrawn(i)" required>
+                            <div *ngIf="payArrearForm.get('specialPay').errors?.['required'] && payArrearForm.get('specialPay').touched"
+                            class="text-danger">
+                            Special Pay is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">DA : </label>
+                        <input class="form-control align" type="number" id="daArrear" formControlName="daArrear" required readonly>
+                        <div *ngIf="payArrearForm.get('daArrear').errors?.['required'] && payArrearForm.get('daArrear').touched"
+                            class="text-danger">
+                            DA is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">HRA : </label>
+                        <input class="form-control align" type="number" id="hraArrear" formControlName="hraArrear" required
+                            (keyup)="tobeDrawn(i)">
+                            <div *ngIf="payArrearForm.get('hraArrear').errors?.['required'] && payArrearForm.get('hraArrear').touched"
+                            class="text-danger">
+                            HRA is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">CCA : </label>
+                        <input class="form-control align" type="number" id="ccaArrear" formControlName="ccaArrear" required
+                            (keyup)="tobeDrawn(i)">
+                            <div *ngIf="payArrearForm.get('ccaArrear').errors?.['required'] && payArrearForm.get('ccaArrear').touched"
+                            class="text-danger">
+                            CCA is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">Misc - 1 : </label>
+                        <input class="form-control align" type="number" id="toBemisc1" formControlName="toBemisc1" required
+                            (keyup)="tobeDrawn(i)">
+                            <div *ngIf="payArrearForm.get('toBemisc1').errors?.['required'] && payArrearForm.get('toBemisc1').touched"
+                            class="text-danger">
+                            Misc - 1 is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name"><strong>Total Earnings </strong></label>
+                        <input class="form-control align" type="number" id="totalEarning" formControlName="totalEarning" required
+                            readonly>
+                            <div *ngIf="payArrearForm.get('totalEarning').errors?.['required'] && payArrearForm.get('totalEarning').touched"
+                            class="text-danger">
+                            Total Earning is required.
+                        </div>
+                    </div><br>
+                    <!-- </div> -->
+
+
+                    <h3 class="sub-heading" style="margin-top: 20px;">Already Drawn</h3>
+
+                    <div class="col-2">
+                        <label for="Doc_num" class="label-name">Basic Pay : </label><br>
+                        <input class="form-control align" type="number" formControlName="alreadyBasicPay"
+                            id="alreadyBasicPay" required readonly>
+                            <div *ngIf="payArrearForm.get('alreadyBasicPay').errors?.['required'] && payArrearForm.get('alreadyBasicPay').touched"
+                            class="text-danger">
+                            Basic Pay is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="instalment" class="label-name">Personal Pay : </label>
+                        <input class="form-control align" type="number" id="alreadyPersonalPay" formControlName="alreadyPersonalPay" required readonly
+                            >
+                            <div *ngIf="payArrearForm.get('alreadyPersonalPay').errors?.['required'] && payArrearForm.get('alreadyPersonalPay').touched"
+                            class="text-danger">
+                            Personal Pay is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">Special Pay : </label>
+                        <input class="form-control align" type="number" id="alreadySpecialPay" formControlName="alreadySpecialPay" readonly
+                             required>
+                            <div *ngIf="payArrearForm.get('alreadySpecialPay').errors?.['required'] && payArrearForm.get('alreadySpecialPay').touched"
+                            class="text-danger">
+                            Special Pay is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">DA : </label>
+                        <input class="form-control align" type="number" id="alreadyDaArrear" formControlName="alreadyDaArrear" required 
+                            readonly>
+                            <div *ngIf="payArrearForm.get('alreadyDaArrear').errors?.['required'] && payArrearForm.get('alreadyDaArrear').touched"
+                            class="text-danger">
+                            DA is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">HRA : </label>
+                        <input class="form-control align" type="number" id="alreadyHraArrear" formControlName="alreadyHraArrear" required readonly
+                           >
+                            <div *ngIf="payArrearForm.get('alreadyHraArrear').errors?.['required'] && payArrearForm.get('alreadyHraArrear').touched"
+                            class="text-danger">
+                            HRA is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">CCA : </label>
+                        <input class="form-control align" type="number" id="alreadyCcaArrear" formControlName="alreadyCcaArrear" readonly
+                             required>
+                            <div *ngIf="payArrearForm.get('alreadyCcaArrear').errors?.['required'] && payArrearForm.get('alreadyCcaArrear').touched"
+                            class="text-danger">
+                            CCA is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name">Misc - 1 : </label>
+                        <input class="form-control align" type="number" id="alreadyMisc1" formControlName="alreadyMisc1" readonly
+                            required >
+                            <div *ngIf="payArrearForm.get('alreadyMisc1').errors?.['required'] && payArrearForm.get('alreadyMisc1').touched"
+                            class="text-danger">
+                            Misc - 1 is required.
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="Recovery_amt" class="label-name"><strong>Total Deductions </strong> </label>
+                        <input class="form-control align" type="number" id="totalDeductions" formControlName="totalDeductions" required 
+                            readonly>
+                            <div *ngIf="payArrearForm.get('totalDeductions').errors?.['required'] && payArrearForm.get('totalDeductions').touched"
+                            class="text-danger">
+                           Total Earnings is required.
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end;margin-top: 10px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="Recovery_amt" class="label-name"><strong>Difference </strong> </label>
+                            <input class="form-control align" type="number" id="netPay" formControlName="netPay"
+                               required readonly>
+                               <div *ngIf="payArrearForm.get('netPay').errors?.['required'] && payArrearForm.get('netPay').touched"
+                               class="text-danger">
+                              Difference is required.
+                           </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+
+            <div style="display: flex; justify-content: flex-end;margin-top: 10px;">
+                <!-- totalDifferenceArrear -->
+                <div style="display: flex; flex-direction: column;">
+                  <label for="totalDifferenceArrear" class="label-name"><strong>Total Difference</strong></label>
+                  <input class="form-control align" type="number" id="totalDifferenceArrear" formControlName="totalDifferenceArrear" readonly>
+                  <div *ngIf="myForm.get('totalDifferenceArrear').errors?.['required'] && myForm.get('totalDifferenceArrear').touched" class="text-danger">
+                    Total Difference is required.
+                  </div>
+                </div>
+              </div>
+            <div style="display: flex; justify-content: flex-end;margin-top: 10px;" *ngIf="!isPF">
+                <div style="display: flex; flex-direction: column;">
+                    <label for="Recovery_amt" class="label-name"><strong>CPS </strong> </label>
+                    <input class="form-control align" type="number" id="Recovery_amt" formControlName="cpsPercent" readonly>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end;margin-top: 10px;" *ngIf="isPF">
+                <div style="display: flex; flex-direction: column;">
+                    <label for="Recovery_amt" class="label-name"><strong>GPF </strong> </label>
+                    <input class="form-control align" type="number" id="Recovery_amt" (keyup)="gpfCal($event)"
+                        formControlName="gpfPercent">
+                </div>
+            </div>
+    
+            <div style="display: flex; justify-content: flex-end;margin-top: 10px;">
+                <div style="display: flex; flex-direction: column;">
+                    <label for="Recovery_amt" class="label-name"><strong>Total Netpay </strong> </label>
+                    <input class="form-control align" type="number" id="Recovery_amt" formControlName="totalNetpay" readonly>
+                </div>
+            </div>
+            
+        </div>
+       
+
+    </div>
+
+    <div class="Deduction_btn col-12">
+        <button type="button" routerLink="/payroll/daMonthlysalaryEdit" (click)="closeDialog()"
+            class="btn btn-danger m-1">Back</button>
+        <button *ngIf="!view" type="button" class="btn btn-info m-1" (click)="saveRecovery()">Submit</button>
+        <!--(click)="submit()"-->
+    </div>
+</main>

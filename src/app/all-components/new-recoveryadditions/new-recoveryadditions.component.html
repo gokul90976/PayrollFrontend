@@ -1,0 +1,150 @@
+<main class="main-content">
+    <section>
+        <!-- <h3>Employee</h3> -->
+        <h3 class="sub-heading">Employee Recovery Details</h3>
+
+        <form class="main_recovery g-3" [formGroup]="recoveryForm">
+            <div class="m-2">
+                <label for="emp_id" class="label-name">Employee ID:</label>
+                <input class="form-control obj" type="text" id="emp_id" formControlName="employeeId">
+            </div>
+            <div class="marginTopButton" *ngIf="!edit && !view" style="margin-left:5px">
+                <a matTooltip="Get Employee Details" (click)="fetchRec()"><button type="button"
+                        class="btn btn-primary m-2" id="fatch_btn">Click here</button></a>
+            </div>
+        </form>
+        <form class="main_recovery g-3" [formGroup]="recoveryForm">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="d-flex">
+                    <div class="m-2">
+                        <label for="emp_name" class="label-name">Employee Name:</label>
+                        <input class="form-control" type="text" id="emp_name" [disabled]="isDataFetch" formControlName="employeeName">
+                    </div>
+                    <div class="m-2">
+                        <label for="cadre_code" class="label-name">Designation Code:</label>
+                        <input class="form-control" type="text" id="cadre_code" [disabled]="isDataFetch" formControlName="designationCode">
+                    </div>
+                    <div class="m-2">
+                        <label for="cadre_name" class="label-name">Designation Name:</label>
+                        <input class="form-control" type="text" id="desg_name" [disabled]="isDataFetch" formControlName="designationName" style="width: 250px;">
+                    </div>
+                    <div class="m-2">
+                        <label for="office_code" class="label-name">Office Code:</label>
+                        <input class="form-control" type="text" id="office_code" [disabled]="isDataFetch" formControlName="officeCode">
+                    </div>
+                    <div class="m-2">
+                        <label for="office_name" class="label-name">Office Name:</label>
+                        <input class="form-control" type="text" id="office_name" [disabled]="isDataFetch" formControlName="officeName">
+                    </div>
+                </div>
+                <!-- Right Column -->
+                <div class="d-flex">
+                    <div class="m-2">
+                        <label class="d-block label-name" for="dateOfJoiningService">Date of Joining:</label>
+                        <input class="d-inline form-control obj" type="text" id="dateOfJoiningService" formControlName="dateOfJoiningService">
+                    </div>
+                    <div class="m-2">
+                        <label for="B_P" class="label-name">Basic Pay:</label>
+                        <input class="form-control align obj" type="text" id="B_P" formControlName="basicPay">
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+    </section><br><br>
+
+    <div [formGroup]="recoveryDynamicForm">
+        <div formArrayName="itemsRec">
+            <div class="Dynamic_form-container">
+                <div class="Dynamic_form row" *ngFor="let item of itemsRec; let i = index" [formGroupName]="i">
+                    <div class="col-md-3 mb-3">
+                        <label for="recovery" class="label-name">Recoveries:</label>
+                        <select class="form-select" formControlName="recovery">
+                            <option value="select"></option>
+                            <option value="hba">HBA</option>
+                            <option *ngIf="isPF" value="gpfLoan">GPF Loan</option>
+                            <option *ngIf="isPF" value="gpfArrear">GPF Arrear</option>
+                            <option *ngIf="!isPF" value="cpsArrear">CPS Arrear</option>
+                            <option value="festivalAdvance">Festival Advance</option>
+                            <option value="conveyanceAdvance">Conveyance Advance</option>
+                            <option value="educationAdvance">Education Advance</option>
+                            <option value="marriageAdvance">Marriage Advance</option>
+                            <option value="payAdvance">Pay Advance</option>
+                            <option value="miscDeduction1">Misc 1</option>
+                            <option value="miscDeduction2">Misc 2</option>
+                        </select>
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Doc_num" class="label-name">Total Demand:</label>
+                        <input class="form-control align" type="text" id="Doc_num" formControlName="totalDemand"
+                          (keyup)="decimalInput('recoveryDynamicForm', 'totalDemand', i)"
+                          (input)="decimalInput('recoveryDynamicForm', 'totalDemand', i)"
+                          (blur)="formatToTwoDecimals('recoveryDynamicForm', 'totalDemand', i)">
+                      </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Doc_num" class="label-name">First Inst Amt:</label>
+                        <input class="form-control align" type="text" id="Doc_num" formControlName="perMonthDemand" (keyup)="decimalInput('recoveryDynamicForm', 'perMonthDemand', i)"
+                        (input)="decimalInput('recoveryDynamicForm', 'perMonthDemand', i)"
+                        (blur)="formatToTwoDecimals('recoveryDynamicForm', 'perMonthDemand', i)">
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Total_amount" class="label-name">Regular Inst Amt:</label>
+                        <input class="form-control align" type="text" id="Total_amount" formControlName="regularMonthDemand" (keyup)="decimalInput('recoveryDynamicForm', 'regularMonthDemand', i)"
+                        (input)="decimalInput('recoveryDynamicForm', 'regularMonthDemand', i)"
+                        (blur)="formatToTwoDecimals('recoveryDynamicForm', 'regularMonthDemand', i)">
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Total_amount" class="label-name">Last Inst Amt:</label>
+                        <input class="form-control align" type="text" id="Total_amount" formControlName="lastMonthDemand" (keyup)="decimalInput('recoveryDynamicForm', 'lastMonthDemand', i)"
+                        (input)="decimalInput('recoveryDynamicForm', 'lastMonthDemand', i)"
+                        (blur)="formatToTwoDecimals('recoveryDynamicForm', 'lastMonthDemand', i)">
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Doc_num" class="label-name">Commencement Date:</label>
+                        <input class="form-control" type="date" formControlName="date">
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="instalment" class="label-name">No of Month:</label>
+                        <input class="form-control" type="text" id="instalment" formControlName="noOfMonths">
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Doc_num" class="label-name">Recovered:</label>
+                        <input class="form-control align" type="text" id="Doc_num" formControlName="recoverd" (keyup)="totalcal('totalDemand', i)" (keyup)="decimalInput('recoveryDynamicForm', 'recoverd', i)"
+                        (input)="decimalInput('recoveryDynamicForm', 'recoverd', i)"
+                        (blur)="formatToTwoDecimals('recoveryDynamicForm', 'recoverd', i)">
+                    </div>
+    
+                    <div class="col-md-3 mb-3">
+                        <label for="Recovery_amt" class="label-name">Balance Amount:</label>
+                        <input class="form-control align" type="text" id="Recovery_amt" formControlName="balanceAmount" (keyup)="decimalInput('recoveryDynamicForm', 'balanceAmount', i)"
+                        (input)="decimalInput('recoveryDynamicForm', 'balanceAmount', i)"
+                        (blur)="formatToTwoDecimals('recoveryDynamicForm', 'balanceAmount', i)" readonly>
+                    </div>
+    
+                    <div class="col-md-3 mb-3 d-flex align-items-end">
+                        <a matTooltip="Add" (click)="addRecoveryButton()" *ngIf="i < 1 && !view">
+                            <mat-icon style="color: blue;">add_circle</mat-icon>
+                        </a>
+                        <a matTooltip="Delete" (click)="deleteRecoveryButton(i)" *ngIf="i >= 1 && !view">
+                            <mat-icon style="color: red;">delete</mat-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="Deduction_btn col-12">
+        <button type="button" routerLink="/payroll/recoveryaddition" class="btn btn-danger m-1">Back</button>
+        <button *ngIf="!view" type="button" class="btn btn-info m-1"  (click)="saveRecovery()">Submit</button>
+
+    </div>
+</main>

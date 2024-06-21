@@ -1,0 +1,33 @@
+
+<section class="main-content">
+    <h2 class="sub-headingg"> Income Tax  Edit (IT)</h2>
+    <div class="profForm">
+        <div class="row">
+            <div>
+                <form [formGroup]="ITeditForm" (submit)="saveIncomeTax()">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">IT From (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="IT from" formControlName="from">
+                        </div>
+        
+                        <div class="col-3">
+                            <label for="Total_amount" class="label-name"> IT To (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="IT to" formControlName="to">
+                        </div>
+        
+                        <div class="col-3">
+                            <label for="Commencement" class="label-name">IT Values (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="IT Values" formControlName="values">
+                        </div>
+        
+                        <div class="col-1 updatebtn">
+                            <button class="btn btn-info" type="submit" [disabled]="!ITeditForm.valid">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,89 @@
+<main class="main-content">
+  <section>
+    <h3 class="sub-heading">DA Arrear</h3>
+  </section><br><br>
+
+  <div [formGroup]="daDynamicForm">
+    <div formArrayName="itemsRec"> <!--style="display: flex;justify-content: center;"-->
+      <div class="Dynamic_form-container">
+        <div class="Dynamic_form row" *ngFor="let item of itemsRec; let i = index" [formGroupName]="i">
+          <div class="row">
+            <div class="col">
+              <div>
+                <label for="Doc_num"><strong>From Date :</strong></label>
+                <input class="form-control" type="date" id="Doc_num" formControlName="fromDate">
+              </div>
+            </div>
+            <div class="col">
+              <div class="d-flex align-items-start justify-content-between">
+                <div>
+                  <label for="Total_amount"><strong>To Date :</strong></label>
+                  <input class="form-control" type="date" id="Total_amount" formControlName="toDate">
+                </div>
+                <div class="d-flex align-items-start">
+                  <a matTooltip="Add" (click)="addRecoveryButton()" *ngIf="i<1 && dataType != 'view'" class="mr-2">
+                    <mat-icon style="color: blue; font-weight: bolder;">add_circle</mat-icon>
+                  </a>
+                  <a matTooltip="Delete" (click)="deleteRecoveryButton(i)" *ngIf="i>=1 && dataType != 'view'">
+                    <mat-icon style="color: red;">delete</mat-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row m-2">
+            <div class="col-3">
+              <label for="Doc_num" class="label-name">Basic Pay : </label><br>
+              <input class="form-control" type="text" formControlName="daArrearBasicPay">
+            </div>
+
+            <div class="col-3">
+              <label for="instalment" class="label-name">Personal Pay : </label>
+              <input class="form-control" type="text" id="instalment" formControlName="daArrearPersonalPay">
+            </div>
+
+            <div class="col-3">
+              <label for="Recovery_amt" class="label-name">DA Difference % : </label>
+              <input class="form-control" type="text" id="Recovery_amt" formControlName="daDifference">
+            </div>
+
+            <div class="col-3">
+              <label for="Recovery_amt" class="label-name">DA : </label>
+              <input class="form-control" type="text" id="Recovery_amt" formControlName="daArrearValue"
+                (keyup)="calculateTotalDA()">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+    <div style="display: flex; justify-content: flex-end;margin-top: 10px;">
+      <div style="display: flex; flex-direction: column;">
+        <label for="Recovery_amt" class="label-name"><strong>Total DA </strong> </label>
+        <input class="form-control" type="number" id="Recovery_amt" formControlName="totalEarning" readonly>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end;margin-top: 10px;">
+      <div style="display: flex; flex-direction: column;">
+        <label for="Recovery_amt" class="label-name"><strong>CPS </strong> </label>
+        <input class="form-control" type="text" id="Recovery_amt" formControlName="totalDeductions" readonly>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end;margin-top: 10px;">
+      <div style="display: flex; flex-direction: column;">
+        <label for="Recovery_amt" class="label-name"><strong>Net DA </strong> </label>
+        <input class="form-control" type="text" id="Recovery_amt" formControlName="netPay" readonly>
+      </div>
+    </div>
+  </div>
+
+  <div class="Deduction_btn col-12">
+    <button type="button" routerLink="/payroll/daMonthlysalaryEdit" (click)="closeDialog()"
+      class="btn btn-danger m-1">Back</button>
+    <button *ngIf="dataType != 'view'" type="button" class="btn btn-info m-1" (click)="saveRecovery()">Submit</button>
+    <!--(click)="submit()"-->
+  </div>
+</main>

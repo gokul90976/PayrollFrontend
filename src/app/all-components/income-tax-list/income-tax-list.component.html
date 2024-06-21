@@ -1,0 +1,112 @@
+<section class="main-content">
+    <h2 class="sub-heading"> Income Tax (IT)</h2>
+
+    <div class="profForm">
+        <div class="row">
+            <div>
+                <form [formGroup]="updateForm" (submit)="saveIncomeTax()">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name">IT From (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="IT from"
+                                formControlName="from">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Total_amount" class="label-name"> IT To (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="IT to" formControlName="to">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Commencement" class="label-name">IT Values (Rs.) : </label>
+                            <input type="number" class="form-control" matInput placeholder="IT Values"
+                                formControlName="values">
+                        </div>
+
+                        <div class="col-1 updatebtn">
+                            <button class="btn btn-info" type="submit" [disabled]="!updateForm.valid">Create</button>
+                        </div>
+
+                        <!-- <a class="add_dynamic" (click)="addProfessionalFormItem()"
+                        *ngIf="i < 1"><mat-icon>add_circle</mat-icon></a>
+
+                    <a class="save_dynamic" (click)="saveProfessionalTax()"
+                        *ngIf="i < 1"><mat-icon>done_outline</mat-icon></a>
+
+                    <a class="delete_dynamic" (click)="deleteContainerBox(i,professionalTaxForm)"
+                        *ngIf="i > 0"><mat-icon>delete</mat-icon></a> -->
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 30px;">
+            <div class="card">
+                <div class="table-container">
+                    <table mat-table [dataSource]="incomeTaxDataSource" matSort class=" table application-table">
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> S.No </th>
+                            <td mat-cell *matCellDef="let element;let i = index"> {{i + 1}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="itfrom">
+                            <th mat-header-cell *matHeaderCellDef> IT From </th>
+                            <td mat-cell *matCellDef="let element"> {{element.from}} </td>
+                        </ng-container>
+
+                        <!-- Username Column -->
+                        <ng-container matColumnDef="itto">
+                            <th mat-header-cell *matHeaderCellDef> IT To </th>
+                            <td mat-cell *matCellDef="let element"> {{element.to}} </td>
+                        </ng-container>
+
+                        <!-- Email Column -->
+                        <ng-container matColumnDef="itvalues">
+                            <th mat-header-cell *matHeaderCellDef> IT Values </th>
+                            <td mat-cell *matCellDef="let element"> {{element.values}} </td>
+                        </ng-container>
+
+                        <!-- Action Column -->
+                        <!-- <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                                <td mat-cell *matCellDef="let element"><a [routerLink]="['..','view',element.id]">View</a> | <a  [routerLink]="['..','edit',element.id]">Edit</a> | <a  [routerLink]="['..','delete',element.id]">Delete</a> </td>
+                              </ng-container> -->
+
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let incomeTax" class="p-0">
+                                <div class="d-flex">
+                                    <!-- <a style="color: #20b1f9;" (click)="goToTaxCrud(recoveryadditions.id)"><mat-icon>visibility</mat-icon></a> -->
+                                    <!-- <a style="color: #20b1f9; margin-top: 5px;"(click)="goToTaxCrud(professionalTax.id)"><mat-icon>edit</mat-icon></a> -->
+                                    <a matToolTip="Edit" style="color: #503C3C; margin-top: 5px;"
+                                        (click)="goToTaxCrud(incomeTax.id)"><mat-icon>edit</mat-icon></a>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a matToolTip="Delete" style="color: red"
+                                        (click)="deleteIncomeData(incomeTax.id)"><mat-icon>delete</mat-icon></a>
+
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter</td>
+                        </tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10,15,20]" showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>

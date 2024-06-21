@@ -1,0 +1,61 @@
+<!-- <p>commonfields works!</p> -->
+
+<main id="main">
+<section>
+    <h2 class="sub-heading">Common Fields</h2>
+
+    <form [formGroup]="employeeForm" class="empForm">
+
+        <div class="mb-3">
+            <label for="vpf" class="form-label">VPF :</label>
+            <input id="vpf" type="text" class="form-control" formControlName="v_pf">
+        </div>
+
+        <div class="mb-3">
+            <label for="fbf" class="form-label">FBF :</label>
+            <input id="fbf" type="text" class="form-control" formControlName="f_bf">
+        </div>
+
+        <div class="mb-3">
+            <label for="nhis" class="form-label">NHIS :</label>
+            <input id="nhis" type="text" class="form-control" formControlName="nh_is">
+        </div>
+
+        <div class="mb-3">
+            <label for="spf" class="form-label">SPF :</label>
+            <input id="spf" type="text" class="form-control" formControlName="s_pf">
+        </div>
+
+        <div class="mb-3">
+            <label for="convenadvance" class="form-label">Convenience Advance (DAP) :</label>
+            <input id="convenadvance" type="text" class="form-control" formControlName="convenience_adv">
+        </div>
+
+        <div class="mb-3">
+            <label for="hba" class="form-label">HBA :</label>
+            <input id="hba" type="text" class="form-control" formControlName="h_ba">
+        </div>
+
+        <div class="mb-3">
+            <label for="eoe" class="form-label">EOE :</label>
+            <input id="eoe" type="text" class="form-control" formControlName="e_oe">
+        </div>
+
+        <div class="mb-3">
+            <label for="watercharge" class="form-label">Water Charges :</label>
+            <input id="watercharge" type="text" class="form-control" formControlName="water_charges">
+        </div>
+
+        <div class="mb-3">
+            <label for="hrr" class="form-label">HRR :</label>
+            <input id="hrr" type="text" class="form-control" formControlName="h_rr">
+        </div>
+
+    </form>
+</section>
+<div class="row">
+    <div class="Deduction_btn col-12">
+        <button type="button" class="btn btn-success m-1" (click)="sumbit_CommonData()">Submit</button>
+    </div>
+</div>
+</main>

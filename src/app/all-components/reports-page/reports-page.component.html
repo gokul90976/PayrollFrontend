@@ -1,0 +1,2518 @@
+<section class="main-content">
+    <div class="header-row">
+        <h3 class="sub-heading">Reports Lists</h3>
+        <mat-form-field class="custom-width">
+            <mat-label>Select Reports</mat-label>
+            <mat-select (selectionChange)="onTabSelectionChange($event)">
+                <mat-option *ngFor="let tab of Tabs" [value]="tab">{{tab}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <!--MISC 1-->
+
+    <div class="card" *ngIf="selectedTab == 'MISCELLENEOUS 1'">
+
+        <div class="d-flex">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadMiscExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadMiscPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div class="filter-container mt-4">
+            <div class="filter-item">
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label class="filter-label">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataMisc1" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="filter-item">
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label class="filter-label">Employee Name</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeNameFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeName of filteredDataMisc1EmpName"
+                            [value]="employeeName.employeeName">
+                            {{employeeName.employeeName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="filter-item">
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label class="filter-label">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataMisc1Desg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="filter-item">
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label class="filter-label">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataMisc1OfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <!-- <div class="form-container">
+                      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                        <div class="date-field">
+                          <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                          <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                        </div>
+                        <div class="date-field">
+                          <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                          <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                        </div>
+                        <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn mb-3">Submit</button>
+                      </form>
+                    </div> -->
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div> &nbsp;
+
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('MISCELLENEOUS 1')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+
+
+        </div>
+
+
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - MISC 1</th>
+        </tr>
+
+        <table mat-table [dataSource]="miscDataSource" matSort class="mat-elevation-z8 schemes-table">
+
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let misc index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef> Emp Code </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.employeeId}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef> Office Code </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.officeCode}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef> Emp Name </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.employeeName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="designationName">
+                <th mat-header-cell *matHeaderCellDef> Designation </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.designationName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="recovery">
+                <th mat-header-cell *matHeaderCellDef> Recovery Amount </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.miscDeduction1}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.misc1balance}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="miscellaneousColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: miscellaneousColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+
+    </div>
+
+
+    <!--MISC 2-->
+
+    <div class="card" *ngIf="selectedTab == 'MISCELLENEOUS 2'">
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadMisc_2_Excel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadMisc_2_PDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataMisc2" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee Name</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeNameFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeName of filteredDataMisc2EmpName"
+                            [value]="employeeName.employeeName">
+                            {{employeeName.employeeName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataMisc2Desg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataMisc2OfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('MISCELLENEOUS 2')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - MISC 2</th>
+        </tr>
+
+        <table mat-table [dataSource]="miscDataSource2" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let misc index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="recovery">
+                <th mat-header-cell *matHeaderCellDef> Recovery Amount </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.miscDeduction2}} </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let misc"> {{misc.misc2balance}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="miscellaneousColumns2"></tr>
+            <tr mat-row *matRowDef="let misc; columns: miscellaneousColumns2;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--PAY ADVANCE-->
+
+    <div class="card" *ngIf="selectedTab == 'PAY ADVANCE'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadPayADvExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadPayADvPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataPayAdv" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee Name</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeNameFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeName of filteredDataPayAdvEmpName"
+                            [value]="employeeName.employeeName">
+                            {{employeeName.employeeName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataPayAdvDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataPayAdvOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('PAY ADVANCE')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - PAY ADVANCE</th>
+        </tr>
+
+        <table mat-table [dataSource]="payAdvDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let payAdvance index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let payAdvance"> {{payAdvance.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let payAdvance"> {{payAdvance.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let payAdvance"> {{payAdvance.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let payAdvance"> {{payAdvance.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="payAdvanceAmount">
+                <th mat-header-cell *matHeaderCellDef> Pay Advance Amount </th>
+                <td mat-cell *matCellDef="let payAdvance"> {{payAdvance.payAdvance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let payAdvance"> {{payAdvance.payAdvbalance}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="payAdvanceColumns"></tr>
+            <tr mat-row *matRowDef="let payAdvance; columns: payAdvanceColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--EDUCATION ADVANCE-->
+
+    <div class="card" *ngIf="selectedTab == 'EDUCATION ADVANCE'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadEduAdvExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadEduAdvPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataEduAdv" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataEduAdvDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataEduAdvOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('EDUCATION ADVANCE')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - EDUCATION ADVANCE</th>
+        </tr>
+
+        <table mat-table [dataSource]="educationAdvDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let educationAdvance index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let educationAdvance"> {{educationAdvance.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let educationAdvance"> {{educationAdvance.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let educationAdvance"> {{educationAdvance.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let educationAdvance"> {{educationAdvance.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="educationRecoveryAmount">
+                <th mat-header-cell *matHeaderCellDef> Education Recovery Amount </th>
+                <td mat-cell *matCellDef="let educationAdvance"> {{educationAdvance.educationAdvance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let educationAdvance"> {{educationAdvance.eduAdvbalanceAmount}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="educationAdvanceColumns"></tr>
+            <tr mat-row *matRowDef="let educationAdvance; columns: educationAdvanceColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--MARRIAGE ADVANCE-->
+
+    <div class="card" *ngIf="selectedTab == 'MARRIAGE ADVANCE'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadMrgAdvExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadMrgAdvPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataMrgAdv" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataMrgAdvDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataMrgAdvOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('MARRIAGE ADVANCE')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - MARRIAGE ADVANCE</th>
+        </tr>
+
+        <table mat-table [dataSource]="marriageAdvDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let marriageAdvance index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let marriageAdvance"> {{marriageAdvance.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let marriageAdvance"> {{marriageAdvance.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let marriageAdvance"> {{marriageAdvance.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let marriageAdvance"> {{marriageAdvance.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="marriageAmount">
+                <th mat-header-cell *matHeaderCellDef> Marriage Amount </th>
+                <td mat-cell *matCellDef="let marriageAdvance"> {{marriageAdvance.marriageAdvance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let marriageAdvance"> {{marriageAdvance.marriagebalanceAmount}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="marriageAdvanceColumns"></tr>
+            <tr mat-row *matRowDef="let marriageAdvance; columns: marriageAdvanceColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--CONVEYANCE ADVANCE-->
+
+    <div class="card" *ngIf="selectedTab == 'CONVEYANCE ADVANCE'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadConvAdvExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadConvAdvPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataConvAdv" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataConvAdvDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataConvAdvOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('CONVEYANCE ADVANCE')"
+                        class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - CONVEYANCE ADVANCE</th>
+        </tr>
+
+        <table mat-table [dataSource]="conveyanceAdvDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance"> {{conveyanceAdvance.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance"> {{conveyanceAdvance.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance"> {{conveyanceAdvance.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance"> {{conveyanceAdvance.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="conveyanceAmount">
+                <th mat-header-cell *matHeaderCellDef> Conveyance Amount </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance"> {{conveyanceAdvance.conveyanceAdvance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let conveyanceAdvance"> {{conveyanceAdvance.convbalanceAmount}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="conveyanceAdvanceColumns"></tr>
+            <tr mat-row *matRowDef="let conveyanceAdvance; columns: conveyanceAdvanceColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--FESTIVAL ADVANCE-->
+
+    <div class="card" *ngIf="selectedTab == 'FESTIVAL ADVANCE'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadFestAdvExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadFestAdvPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataFestAdv" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataFestAdvDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataFestAdvOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('FESTIVAL ADVANCE')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - FESTIVAL ADVANCE</th>
+        </tr>
+
+        <table mat-table [dataSource]="festivalAdvDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let festivalAdvance index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let festivalAdvance"> {{festivalAdvance.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let festivalAdvance"> {{festivalAdvance.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let festivalAdvance"> {{festivalAdvance.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let festivalAdvance"> {{festivalAdvance.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="festivalAmount">
+                <th mat-header-cell *matHeaderCellDef> Festival Amount </th>
+                <td mat-cell *matCellDef="let festivalAdvance"> {{festivalAdvance.festivalAdvance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                <td mat-cell *matCellDef="let festivalAdvance"> {{festivalAdvance.festbalanceAmount}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="festivalAdvanceColumns"></tr>
+            <tr mat-row *matRowDef="let festivalAdvance; columns: festivalAdvanceColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--INCOME TAX-->
+
+    <div class="card" *ngIf="selectedTab == 'INCOME TAX'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadIncomeDataExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadIncomeDataPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataIncomeTax" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataIncomeTaxDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataIncomeTaxOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('INCOME TAX')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - INCOME TAX</th>
+        </tr>
+
+        <table mat-table [dataSource]="incomeTaxDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let incomeTax index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="panNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Pan No </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.panNo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="basicPay">
+                <th mat-header-cell *matHeaderCellDef> Basic Pay </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.basicPayEarning}} </td>
+            </ng-container>
+            <ng-container matColumnDef="gross">
+                <th mat-header-cell *matHeaderCellDef> Gross </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.totalEarning}} </td>
+            </ng-container>
+            <ng-container matColumnDef="incomeTax">
+                <th mat-header-cell *matHeaderCellDef> Income Tax </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.incomeTax}} </td>
+            </ng-container>
+            <ng-container matColumnDef="incometaxCess">
+                <th mat-header-cell *matHeaderCellDef> Income Tax Cess </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.incomeTaxCess}} </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let incomeTax"> {{incomeTax.incomeTax + incomeTax.incomeTaxCess}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="incomeTaxColumns"></tr>
+            <tr mat-row *matRowDef="let incomeTax; columns: incomeTaxColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="11">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--ONE DAY RECOVERY-->
+
+    <div class="card" *ngIf="selectedTab == 'ONEDAY RECOVERY'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadOnedayRecvExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadOnedayRecvPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataOneDayRecv" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataOneDayRecvDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataOneDayRecvOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('ONEDAY RECOVERY')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - ONEDAY RECOVERY</th>
+        </tr>
+
+        <table mat-table [dataSource]="oneDayRecoveryDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let oneDayRecovery index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="basicPay">
+                <th mat-header-cell *matHeaderCellDef> Basic Pay </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.basicPayEarning}} </td>
+            </ng-container>
+            <ng-container matColumnDef="gross">
+                <th mat-header-cell *matHeaderCellDef> Gross </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.totalEarning || 0}} </td>
+            </ng-container>
+            <ng-container matColumnDef="deductionAmount">
+                <th mat-header-cell *matHeaderCellDef> Deduction Amount </th>
+                <td mat-cell *matCellDef="let oneDayRecovery"> {{oneDayRecovery.oneDayRecovery}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="oneDayRecoveryColumns"></tr>
+            <tr mat-row *matRowDef="let oneDayRecovery; columns: oneDayRecoveryColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="8">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--NHIS-->
+
+    <div class="card" *ngIf="selectedTab == 'NHIS'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadNHISExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadNHISPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataNHIS" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataNHISDesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataNHISOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('NHIS')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - NHIS</th>
+        </tr>
+
+        <table mat-table [dataSource]="nhisDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let nhis index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let nhis"> {{nhis.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let nhis"> {{nhis.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let nhis"> {{nhis.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let nhis"> {{nhis.designationName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="nhisAmount">
+                <th mat-header-cell *matHeaderCellDef> NHIS Amount </th>
+                <td mat-cell *matCellDef="let nhis"> {{nhis.nhis}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="nhisColumns"></tr>
+            <tr mat-row *matRowDef="let nhis; columns: nhisColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="6">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--CPS-->
+
+    <div class="card" *ngIf="selectedTab == 'CPS'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadCpsExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadCpsPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataCPS" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataCPSDesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataCPSOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('CPS')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - CPS</th>
+        </tr>
+
+        <table mat-table [dataSource]="cpsDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let cpsData index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.designationName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="basicPay">
+                <th mat-header-cell *matHeaderCellDef> Basic Pay </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.basicPayEarning}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="personalPay">
+                <th mat-header-cell *matHeaderCellDef> Personal Pay </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.personalPay}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="specialPay">
+                <th mat-header-cell *matHeaderCellDef> Special Pay </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.specialPay}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="daValue">
+                <th mat-header-cell *matHeaderCellDef> DA </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.da}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cpsValue">
+                <th mat-header-cell *matHeaderCellDef> CPS </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.cps}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cpsArrear">
+                <th mat-header-cell *matHeaderCellDef> CPS Arrear </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.cpsArrear}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let cpsData"> {{cpsData.cps + cpsData.cpsArrear}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="cpsDataColumns"></tr>
+            <tr mat-row *matRowDef="let cpsData; columns: cpsDataColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="12">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--PROFESSIONAL TAX-->
+
+    <div class="card" *ngIf="selectedTab == 'PROFESSIONAL TAX'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadProfTaxExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadProfTaxPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataProfTax" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataProfTaxDesg"
+                            [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataProfTaxOfcCode"
+                            [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('PROFESSIONAL TAX')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - PROFESSIONAL TAX</th>
+        </tr>
+
+        <table mat-table [dataSource]="professionalTaxDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let professionalTaxList index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let professionalTaxList"> {{professionalTaxList.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let professionalTaxList"> {{professionalTaxList.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let professionalTaxList"> {{professionalTaxList.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let professionalTaxList"> {{professionalTaxList.designationName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="professionalTaxAmount">
+                <th mat-header-cell *matHeaderCellDef> Professioanl Tax Amount </th>
+                <td mat-cell *matCellDef="let professionalTaxList"> {{professionalTaxList.professionalTax}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="professionalTaxListColumns"></tr>
+            <tr mat-row *matRowDef="let professionalTaxList; columns: professionalTaxListColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="6">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--RENT-->
+
+    <div class="card" *ngIf="selectedTab == 'RENT'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadRentExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadRentPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataRent" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataRentDesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataRentOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('RENT')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - RENT</th>
+        </tr>
+
+        <table mat-table [dataSource]="rentDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let rentDataList index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{rentDataList.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{rentDataList.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{rentDataList.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{rentDataList.designationName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="rent">
+                <th mat-header-cell *matHeaderCellDef> Rent </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{rentDataList.rentDeductions}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="waterCharge">
+                <th mat-header-cell *matHeaderCellDef> Water Charge </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{rentDataList.waterCharges}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let rentDataList"> {{ rentDataList.rentDeductions + rentDataList.waterCharges}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="rentDataListColumns"></tr>
+            <tr mat-row *matRowDef="let rentDataList; columns: rentDataListColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="8">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--HBA-->
+
+    <div class="card" *ngIf="selectedTab == 'HBA'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadHBAExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadHBAPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataHBA" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataHBADesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataHBAOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('HBA')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - HBA</th>
+        </tr>
+
+        <table mat-table [dataSource]="hbaDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let hbaDataList index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.designationName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="hba">
+                <th mat-header-cell *matHeaderCellDef> HBA </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.hba}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="hbf">
+                <th mat-header-cell *matHeaderCellDef> HBF </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.hbf}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="eoe">
+                <th mat-header-cell *matHeaderCellDef> EOE </th>
+                <td mat-cell *matCellDef="let hbaDataList"> {{hbaDataList.eoe}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let hbaDataList">    {{ hbaDataList.hba  + hbaDataList.hbf  + hbaDataList.eoe}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="hbaListColumns"></tr>
+            <tr mat-row *matRowDef="let hbaDataList; columns: hbaListColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="9">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--FBF-->
+
+    <div class="card" *ngIf="selectedTab == 'FBF'">
+
+        <div style="display: flex; align-items: center;">
+
+            <div class="d-flex mb-4">
+                <button class="btn excelBtn me-2" id="excel" (click)="downloadFBFExcel()">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                            <path
+                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                        </svg>
+                    </span> Excel
+                </button>
+                <button class="btn btn-light pdfBtn" (click)="downloadFBFPDF()">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                            class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                            <path
+                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                        </svg>
+                    </span> PDF
+                </button>
+            </div>
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataFBF" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataFBFDesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataFBFOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('FBF')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - FBF</th>
+        </tr>
+
+        <table mat-table [dataSource]="fbfDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let fbfDataList index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let fbfDataList"> {{fbfDataList.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let fbfDataList"> {{fbfDataList.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let fbfDataList"> {{fbfDataList.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let fbfDataList"> {{fbfDataList.designationName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="fbfAmount">
+                <th mat-header-cell *matHeaderCellDef> FBF Amount </th>
+                <td mat-cell *matCellDef="let fbfDataList"> {{fbfDataList.fbf}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="fbfListColumns"></tr>
+            <tr mat-row *matRowDef="let fbfDataList; columns: fbfListColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="6">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--SPECIAL PF-->
+
+    <div class="card" *ngIf="selectedTab == 'SPECIAL PF'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadSplPfExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadSplPfPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataSplPf" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataSplPfDesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataSplPfOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('SPECIAL PF')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - SPECIAL PF</th>
+        </tr>
+
+        <table mat-table [dataSource]="specialPfDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let specialPfDataList index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let specialPfDataList"> {{specialPfDataList.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let specialPfDataList"> {{specialPfDataList.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let specialPfDataList"> {{specialPfDataList.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let specialPfDataList"> {{specialPfDataList.designationName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="specialPfAmount">
+                <th mat-header-cell *matHeaderCellDef> Special PF Amount </th>
+                <td mat-cell *matCellDef="let specialPfDataList"> {{specialPfDataList.specialPf}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="specialPfListColumns"></tr>
+            <tr mat-row *matRowDef="let specialPfDataList; columns: specialPfListColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="6">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <!--GPF-->
+
+    <div class="card" *ngIf="selectedTab == 'GPF'">
+
+        <div class="d-flex mb-4">
+            <button class="btn excelBtn me-2" id="excel" (click)="downloadGPFExcel()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biExcel-btn" id="m1" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> Excel
+            </button>
+            <button class="btn btn-light pdfBtn" (click)="downloadGPFPDF()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                        class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+                    </svg>
+                </span> PDF
+            </button>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Employee ID</mat-label>
+                    <mat-select (selectionChange)="applyTableEmployeeIdFilter($event)" multiple>
+                        <mat-option *ngFor="let employeeId of filteredDataGPF" [value]="employeeId.employeeId">
+                            {{employeeId.employeeId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Designation</mat-label>
+                    <mat-select (selectionChange)="applyTableDesinationFilter($event)" multiple>
+                        <mat-option *ngFor="let designationName of filteredDataGPFDesg" [value]="designationName.designationName">
+                            {{designationName.designationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" id="example1" style="margin-left: 10px;">
+                    <mat-label style="font-weight: bold;color: black;">Office Code</mat-label>
+                    <mat-select (selectionChange)="applyTableOfficeCodeFilter($event)" multiple>
+                        <mat-option *ngFor="let officeCode of filteredDataGPFOfcCode" [value]="officeCode.officeCode">
+                            {{officeCode.officeCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="date-form">
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Doc_num" class="date-label"><strong>From Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Doc_num" formControlName="fromDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row">
+                    <div class="date-field">
+                        <label for="Total_amount" class="date-label"><strong>To Date:</strong></label>
+                        <input class="form-control date-input" type="date" id="Total_amount" formControlName="toDate">
+                    </div>
+                </div>&nbsp;
+                <div class="date-row mt-4">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+                <div class="date-row mt-4">
+                    <button type="submit" (click)="refresh('GPF')" class="btn btn-danger">Refresh</button>
+                </div>
+            </form>
+        </div>
+
+        <tr>
+            <th style="text-align: center; display: flex; justify-content: center; align-items: center;background-color: #F7ECDE;"
+                colspan="8">RECOVERY SCHEDULE - GPF</th>
+        </tr>
+
+        <table mat-table [dataSource]="gpfDataSource" matSort class="schemes-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="sNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+                <td mat-cell *matCellDef="let gpfDataList index as i"> {{ i + 1 }} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Code </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.employeeId}} </td>
+            </ng-container>
+
+            <!-- Division Column -->
+            <ng-container matColumnDef="officeCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Office Code </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.officeCode}} </td>
+            </ng-container>
+
+            <!-- Scheme Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.employeeName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="designationName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Designation </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.designationName}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="basicPayEarning">
+                <th mat-header-cell *matHeaderCellDef> Basic Pay </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.basicPayEarning}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="personalPay">
+                <th mat-header-cell *matHeaderCellDef> Personal Pay </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.personalPay}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="specialPay">
+                <th mat-header-cell *matHeaderCellDef> Special Pay </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.specialPay}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="da">
+                <th mat-header-cell *matHeaderCellDef> DA </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.da}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="gpf_s">
+                <th mat-header-cell *matHeaderCellDef> GPF (S) </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.gpfSub}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="vpf">
+                <th mat-header-cell *matHeaderCellDef> VPF </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.vpf}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="gpf_L">
+                <th mat-header-cell *matHeaderCellDef> GPF (L) </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.gpfLoan}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="gpfArrear">
+                <th mat-header-cell *matHeaderCellDef> GPF Arrear </th>
+                <td mat-cell *matCellDef="let gpfDataList"> {{gpfDataList.gpfArrear}} </td>
+            </ng-container>
+
+            <!-- Asset Category Column -->
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let gpfDataList">  {{ gpfDataList.gpfSub + gpfDataList.vpf  }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="gPfListColumns"></tr>
+            <tr mat-row *matRowDef="let gpfDataList; columns: gPfListColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="14">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+</section>

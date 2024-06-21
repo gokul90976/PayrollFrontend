@@ -1,0 +1,184 @@
+<section class="main-content">
+    <div class="header-row mb-4">
+        <h3 class="sub-heading">Tax calculations</h3>
+    </div>
+    <div class="filter-row mb-4">
+        <div class="col-6">
+            <div class="search-container">
+                <div>
+                    <input matInput #input type="text" id="search-input"
+                        class="search-input" placeholder="Search...">
+                    <div class="search-icon">
+                        <mat-icon>search</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: end;">
+            <button class="btn btn-light add-dataBtn" routerLink="/payroll/taxcalculationAdd" >
+                <span><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg></span>New Tax Details</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="topButtons row">
+            <button class="btn btn-outline col-4" style="font-weight: bold;" (click)="showTables('professionalTax')" [class.active]="tableName === 'professionalTax'">Profession Tax</button>
+            <button class="btn btn-outline col-4" style="font-weight: bold;" (click)="showTables('incomTax')" [class.active]="tableName === 'incomTax'">Income Tax</button>
+            <button class="btn btn-outline col-4" style="font-weight: bold;" (click)="showTables('DA')" [class.active]="tableName === 'DA'">DA</button>
+        </div>
+    </div>
+
+    <div class="card">
+
+        <!--------------------------------------------------------------------------------------------------------->
+
+        <div class="table-container" *ngIf="tableName === 'professionalTax'">
+            <h2>PROFESSIONAL TAX</h2>
+            <table mat-table [dataSource]="professionalTaxDataSource" matSort class=" table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="border-top-left-radius:20px;border-bottom-left-radius: 20px;"> S.No. </th>
+                    <!-- <td mat-cell *matCellDef="let recoveryadditions index as i"> {{ i + 1 }} </td> -->
+                    <td mat-cell *matCellDef="let professionalTax index as i"> {{ professionalTax.id}} </td>
+
+    
+                </ng-container>
+    
+                <!-- Scheme Name Column -->
+                <ng-container matColumnDef="professionalFrom">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> From </th>
+                    <td mat-cell *matCellDef="let professionalTax"> {{professionalTax.professionalFrom}} </td>
+                </ng-container>
+    
+                <!-- Asset Category Column -->
+                <ng-container matColumnDef="professionalTo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> To </th>
+                    <td mat-cell *matCellDef="let professionalTax"> {{professionalTax.professionalTo}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="professionalValues">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Values</th>
+                    <td mat-cell *matCellDef="let professionalTax"> {{professionalTax.professionalValues}} </td>
+                </ng-container>
+    
+                <!-- Action Column -->
+                <ng-container matColumnDef="ACTION">
+                    <th mat-header-cell *matHeaderCellDef style="border-top-right-radius:20px;border-bottom-right-radius: 20px;"> Action </th>
+                    <td mat-cell *matCellDef="let professionalTax" class="p-0">
+                        <div class="d-flex justify-content-evenly">
+                            <!-- <a style="color: #20b1f9;" (click)="goToTaxCrud(recoveryadditions.id)"><mat-icon>visibility</mat-icon></a> -->
+                            <a style="color: #20b1f9; margin-top: 5px;"  (click)="goToTaxCrud(professionalTax.id)" ><mat-icon>edit</mat-icon></a>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="professionalTaxTableColumns"></tr>
+                <tr mat-row *matRowDef="let professionalTax; columns: professionalTaxTableColumns;"></tr>
+    
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr>
+            </table>
+        </div>
+
+        <!------------------------------------------------------------------------------------------------------------>
+      
+        <div class="table-container" *ngIf="tableName === 'incomTax'">
+            <h2>INCOME TAX</h2>
+            <table mat-table [dataSource]="incomeTaxDataSource" matSort class=" table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;"> S.No. </th>
+                    <td mat-cell *matCellDef="let incomTax index as i"> {{ i + 1 }} </td>
+    
+                </ng-container>
+    
+                <ng-container matColumnDef="incomeTaxFrom">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> From </th>
+                    <td mat-cell *matCellDef="let incomTax"> {{incomTax.incomeTaxFrom}} </td>
+                </ng-container>
+                <ng-container matColumnDef="incomeTaxTo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> To </th>
+                    <td mat-cell *matCellDef="let incomTax"> {{incomTax.incomeTaxTo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="incomeTaxValues">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Values </th>
+                    <td mat-cell *matCellDef="let incomTax"> {{incomTax.incomeTaxValues}} </td>
+                </ng-container>
+    
+                <!-- Action Column -->
+                <ng-container matColumnDef="ACTION">
+                    <th mat-header-cell *matHeaderCellDef style="border-top-right-radius:20px;border-bottom-right-radius: 20px; "> Action </th>
+                    <td mat-cell *matCellDef="let incomTax" class="p-0">
+                        <div class="d-flex justify-content-evenly">
+                            <!-- <a style="color: #20b1f9;" (click)="goToTaxCrud(recoveryadditions.id)"><mat-icon>visibility</mat-icon></a> -->
+                            <a style="color: #20b1f9; margin-top: 5px;"  (click)="goToTaxCrud(incomTax.id)" ><mat-icon>edit</mat-icon></a>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="incomeTaxTableColumns"></tr>
+                <tr mat-row *matRowDef="let recoveryadditions; columns: incomeTaxTableColumns;"></tr>
+    
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr>
+            </table>
+        </div>
+
+        <!----------------------------------------------------------------------------------------------------------->
+
+        <div class="table-container" *ngIf="tableName === 'DA'">
+            <h2>DA</h2>
+            <table mat-table [dataSource]="daDataSource" matSort class=" table application-table">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="border-top-left-radius:20px;border-bottom-left-radius: 20px;"> S.No. </th>
+                    <td mat-cell *matCellDef="let daCalculation index as i"> {{ i + 1 }} </td>
+    
+                </ng-container>
+    
+                <ng-container matColumnDef="dafrom">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>From </th>
+                    <td mat-cell *matCellDef="let daCalculationdaCalculation"> {{daCalculationdaCalculation.dafrom}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="dato">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>To </th>
+                    <td mat-cell *matCellDef="let daCalculation"> {{daCalculation.dato}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="davalues">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Values </th>
+                    <td mat-cell *matCellDef="let daCalculation"> {{daCalculation.davalues}} </td>
+                </ng-container>
+               
+    
+                <!-- Action Column -->
+                <ng-container matColumnDef="ACTION">
+                    <th mat-header-cell *matHeaderCellDef style="border-top-right-radius:20px;border-bottom-right-radius: 20px;"> Action </th>
+                    <td mat-cell *matCellDef="let daCalculation" class="p-0">
+                        <div class="d-flex justify-content-evenly">
+                            <!-- <a style="color: #20b1f9;" (click)="goToTaxCrud(recoveryadditions.id)"><mat-icon>visibility</mat-icon></a> -->
+                            <a style="color: #20b1f9; margin-top: 5px;"  (click)="goToTaxCrud(daCalculation.id)" ><mat-icon>edit</mat-icon></a>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="daTableColumns"></tr>
+                <tr mat-row *matRowDef="let recoveryadditions; columns: daTableColumns;"></tr>
+    
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr>
+            </table>
+        </div>
+
+        <mat-paginator [pageSizeOptions]="[5,10,15,20]"
+            showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+
+    </div>
+</section>

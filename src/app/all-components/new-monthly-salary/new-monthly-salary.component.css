@@ -1,0 +1,221 @@
+/* .topMenu {
+  display: flex;
+  flex-wrap: wrap;
+} */
+
+/* label {
+  color: #161f6d !important;
+  font-size: 15px;
+
+} */
+
+/* .top_datepicker {
+  margin-left: 10px;
+  margin-top: 10px;
+} */
+
+.topMenu {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: space-between; /* Distribute space between items */
+}
+
+.topMenu > div {
+  flex: 1; /* Make each div take equal space */
+  margin-right: 10px; /* Add margin between elements */
+}
+
+.mat-form-field {
+  width: 100%; /* Ensure mat-form-field takes full width */
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.bold-label .mat-form-field-label {
+  font-weight: bold;
+}
+
+.filter-row {
+  /* background-color: #ffffff; */
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+.search-input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  background-color: #F6F8FA;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  display: flex;
+}
+
+.search-icon mat-icon {
+  color: #161f6d;
+}
+
+.main-content {
+  padding-right: 5px;
+  padding-left: 5px;
+
+}
+
+.application-table th {
+  background-color: #503C3C !important;
+  color: #fff;
+}
+
+.application-table td {
+  background-color: #FFE3CA !important;
+  color: black;
+}
+
+.voucher_in {
+  height: 30px;
+  width: 55px;
+}
+
+.action_column {
+  color: #161f6d;
+}
+
+.card {
+  background-color: #503C3C;
+  height: 90%;
+  border-radius: 10px;
+   /* border: 1px solid #ddd; */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+  margin: 0px;
+}
+
+.mon_column {
+  height: auto;
+  width: 100px;
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: bold;
+  color: #503C3C;
+}
+
+.date_column {
+  height: 30px;
+  width: 140px;
+}
+
+.form-select {
+  height: 30px !important;
+  width: 95px !important;
+}
+
+.year_colum {
+  height: 30px !important;
+  width: 80px !important;
+}
+
+.mat-mdc-tab.mdc-tab {
+  background-color: #4E93D4;
+}
+
+.table-container {
+  max-width: 100%;
+  /* Adjust the width as needed */
+  overflow-x: auto;
+  /* Enable horizontal scrolling when content exceeds the width */
+}
+
+.table {
+  width: 100%;
+  /* Optionally, make the table full width of its container */
+  border-collapse: collapse;
+  /* Optional: Collapse table borders */
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #161f6d;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3e4c75;
+}
+
+.footerButtons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remarksForm.card{
+  margin: 2rem;
+  display: flex;
+  flex-direction: row;
+  background-color:#FFE3CA;
+  box-sizing: border-box;
+}
+
+mat-paginator{
+  background-color:#FFE3CA;
+
+}
+
+
+/* label {
+  font-size: large;
+  float: left;
+} */
+
+.remarksField {
+  width: 20rem !important;
+}
+
+.form-control{
+  margin-top: 10px;
+}
+
+.label-name{
+  color: #3E3232;
+  font-size: large;
+  float: left;
+}
+
+.mat-column-totalEarning,
+.mat-column-totaltotalDeductions,
+.mat-column-netPay
+{
+  text-align: right !important;
+}

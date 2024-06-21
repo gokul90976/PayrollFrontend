@@ -1,0 +1,15 @@
+<ng-container *ngIf="data.from === 'delete'">
+    <mat-dialog-content>
+      <p class="fs_14 text-center mb-3 ">{{'Are you sure want to delete?'}}</p>
+      <div class="row w-100 mx-0 justify-content-center" style="display: flex;gap: 10px;">
+        <button mat-raised-button color="primary"  (click)="confirmDelete()" class="mr-2" style="width: 50px;">
+          {{'Yes' }}
+        </button>
+        <button mat-raised-button color="accent"  (click)="cancelDelete()" style="width: 50px;">
+          {{'No' }}
+        </button>
+      </div>
+    </mat-dialog-content>
+  </ng-container>
+ 
+  

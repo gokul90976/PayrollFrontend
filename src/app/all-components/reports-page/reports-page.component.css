@@ -1,0 +1,228 @@
+.main-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #F7ECDE;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.sub-heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #18978F;
+}
+
+.filter-row {
+  background-color: #F7ECDE;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+.search-input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  background-color: #F6F8FA;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  display: flex;
+}
+
+.search-icon mat-icon {
+  color: #161f6d;
+}
+
+.date-container input {
+  background-color: #F6F8FA;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  padding: 0.4rem;
+}
+
+.excel-btn {
+  color: #161f6d;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #161f6d;
+}
+
+.excel-btn .bi-download {
+  width: 1rem;
+  margin-right: 5px;
+}
+
+.add-dataBtn {
+  color: #161f6d;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #161f6d;
+}
+
+.add-dataBtn .bi-plus {
+  width: 1rem;
+  margin-right: 5px;
+}
+
+.filter-row .label {
+  color: #161f6d;
+  font-weight: bold;
+}
+
+.card {
+  background-color: #18978F;
+  height: 90%;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+  margin: 0px;
+}
+
+.schemes-table th {
+  background-color: #18978F !important;
+  color: #fff;
+}
+
+.schemes-table td {
+  background-color: #F7ECDE !important;
+  color: black;
+}
+
+.master-button {
+  border-radius: 1rem;
+  background-color: #161f6d !important;
+  color: white;
+  font-size: 14px;
+}
+
+.heading {
+  text-align: center;
+  font-size: 18px;
+  color: black;
+}
+
+.main-contain {
+  padding: 20px;
+}
+
+.custom-width {
+  width: 300px; /* Set your desired width here */
+}
+
+#excel {
+  background-color: #26582fd0;
+  color: white;
+}
+
+.pdfBtn {
+  font-weight: 500;
+  background-color: #a5481d;
+  color: white;
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.filter-item {
+  flex: 1 1 calc(25% - 10px); /* Adjust as needed */
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.filter-field {
+  width: 100%;
+}
+
+.date-form {
+  width: 100%;
+  max-width: 600px; /* Adjust as needed */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.date-field {
+  flex: 0 0 50%; /* Adjust as needed */
+  margin-bottom: 15px;
+}
+
+.date-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.date-input {
+  width: 100%;
+}
+
+.submit-btn {
+  width: 100%;
+}
+
+.date-input {
+  width: 150px; /* Set the width according to your preference */
+}
+
+.mat-column-recovery,
+.mat-column-balance,
+.mat-column-payAdvanceAmount,
+.mat-column-educationRecoveryAmount,
+.mat-column-marriageAmount,
+.mat-column-conveyanceAmount,
+.mat-column-festivalAmount,
+.mat-column-basicPay,
+.mat-column-gross,
+.mat-column-incomeTax,
+.mat-column-incometaxCess,
+.mat-column-total,
+.mat-column-deductionAmount,
+.mat-column-nhisAmount,
+.mat-column-personalPay,
+.mat-column-specialPay,
+.mat-column-daValue,
+.mat-column-cpsValue,
+.mat-column-cpsArrear,
+.mat-column-total,
+.mat-column-professionalTaxAmount,
+.mat-column-balance,
+.mat-column-rent,
+.mat-column-waterCharge,
+.mat-column-hba,
+.mat-column-hbf,
+.mat-column-eoe,
+.mat-column-fbfAmount,
+.mat-column-specialPfAmount,
+.mat-column-gpf_s,
+.mat-column-vpf,
+.mat-column-gpf_L,
+.mat-column-gpfArrear
+{
+  text-align: right !important;
+}
+
+

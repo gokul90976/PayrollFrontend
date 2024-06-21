@@ -1,0 +1,78 @@
+
+.sub-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #161f6d;
+}
+#main{
+    padding: 2rem;
+    /* background: #3c37320a !important; */
+}
+.empForm{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.earnform{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.deductionform{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.Deduction_btn{
+    text-align: center;
+}
+input.ng-invalid.ng-touched{
+    border: red 2px solid;
+}
+small{
+    color: red;
+    font-weight: bold;
+}
+.eranings_customfield{
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px 0px 5px 0px;
+    width: 34rem;
+    margin: 5px;
+    gap: 5px;
+}
+.eranings_customfield input{
+    width: 10rem;
+}
+svg{
+    color: red;
+}
+.add_field_bt{
+    float: right;
+    width: auto;
+}
+select{
+    height: 37px; 
+    width: 210px;
+}
+
+.form-select{
+    background-color: #ecf5ff !important;
+    width: 175px !important
+}
+
+.form-control{
+    background-color: #ecf5ff !important;
+    width: 175px !important
+}
+.empIDstyle{
+    display: flex;
+    gap: 10px;
+    margin: 0px 0px 10px 0px;
+}
+.netPayTotalField ,.deductionTotalField ,.totalEarningFields{
+    width: 20rem !important;
+}
+.totalEarningFieldsDiv, .deductionTotalFieldDiv ,.netPayTotalFieldDiv{
+    float: right;
+}

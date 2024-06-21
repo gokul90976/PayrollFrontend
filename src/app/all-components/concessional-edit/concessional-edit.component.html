@@ -1,0 +1,55 @@
+
+<section class="main-content">
+    <h2 class="sub-headingg"> Concessional Edit</h2>
+
+    <div class="profForm">
+        <div class="row">
+            <div>
+                <form [formGroup]="editForm" (submit)="updateConcessValues()">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="Doc_num" class="label-name"> Pay Range From : </label>
+                            <input type="number" class="form-control" matInput placeholder=" from"
+                                formControlName="payRangeFrom">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="Total_amount" class="label-name"> Pay Range To : </label>
+                            <input type="number" class="form-control" matInput placeholder=" to"
+                                formControlName="payRangeTo">
+                        </div>
+
+                        <div class="form-row m-2">
+                            <div class="col-1 ">
+                                <label for="Commencement" class="label-name"> Grade 01 : </label>
+                                <input type="number" class="form-control" matInput placeholder=" Grade 1"
+                                    formControlName="grade01">
+                            </div>
+                            <div class="col-1">
+                                <label for="Commencement" class="label-name"> Grade 02 : </label>
+                                <input type="number" class="form-control" matInput placeholder=" Grade 2"
+                                    formControlName="grade02">
+                            </div>
+                            <div class="col-1">
+                                <label for="Commencement" class="label-name"> Grade 03 : </label>
+                                <input type="number" class="form-control" matInput placeholder=" Grade 3"
+                                    formControlName="grade03">
+                            </div>
+                            <div class="col-1">
+                                <label for="Commencement" class="label-name"> Grade 04 : </label>
+                                <input type="number" class="form-control" matInput placeholder=" Grade 4"
+                                    formControlName="grade04">
+                            </div>
+                        </div>
+        
+                        <div class="col-1 updatebtn">
+                            <button class="btn btn-info" type="submit" [disabled]="!editForm.valid">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+

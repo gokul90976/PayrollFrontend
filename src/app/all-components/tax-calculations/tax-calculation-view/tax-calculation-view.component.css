@@ -1,0 +1,171 @@
+.main-content {
+    padding: 3rem;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sub-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #161f6d;
+}
+
+.filter-row {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-container {
+    position: relative;
+    display: inline-block;
+}
+
+.search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    background-color: #F6F8FA;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    display: flex;
+}
+
+.search-icon mat-icon {
+    color: #161f6d;
+}
+
+.date-container input {
+    background-color: #F6F8FA;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    padding: 0.4rem;
+}
+
+.excel-btn {
+    color: #161f6d;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #161f6d;
+}
+
+.excel-btn .bi-download {
+    width: 1rem;
+    margin-right: 5px;
+}
+
+.add-dataBtn {
+    color: #161f6d;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #161f6d;
+}
+
+.add-dataBtn .bi-plus {
+    width: 1rem;
+    margin-right: 5px;
+}
+
+.filter-row .label {
+    color: #161f6d;
+    font-weight: bold;
+}
+
+.application-table th {
+    /* background-color: #161f6d !important; */
+    /* background-color: #4E93D4 !important; */
+    background-color: #20b1f9 !important;
+
+    color: #fff;
+}
+
+.card {
+    background-color: #fff;
+    height: 90%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+    margin: 0px;
+}
+
+.master-button {
+    border-radius: 1rem;
+    background-color: #161f6d !important;
+    color: white;
+    font-size: 14px;
+}
+
+.add-coupon {
+    font-size: 16px;
+
+    :a {
+        font-weight: 500;
+        color: #460b3c;
+        text-decoration: none;
+        padding-right: 15%;
+    }
+}
+
+.table-container {
+    max-width: 100%; /* Adjust the width as needed */
+    overflow-x: auto; /* Enable horizontal scrolling when content exceeds the width */
+  }
+  
+  .table {
+    width: 100%; /* Optionally, make the table full width of its container */
+    border-collapse: collapse; /* Optional: Collapse table borders */
+  }
+  
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #161f6d; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #3e4c75;
+  }
+
+  .active{
+    background-color: #161f6d!important;
+    color: #fff;
+  }
+  .btn-outline:hover{
+    background-color: #161f6d!important;
+    color: #fff;
+  }
+
+  .table-container td{
+    text-align: start;
+    margin-top: 5px;
+
+  }
+  .table-container th{
+    text-align: left;
+  }

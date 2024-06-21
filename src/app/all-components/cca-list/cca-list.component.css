@@ -1,0 +1,231 @@
+.main-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: gainsboro;
+    height: auto;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    /* Align items vertically */
+    justify-content: flex-start;
+    /* Align items horizontally */
+    gap: 100px;
+    /* Adjust the space between div elements */
+    width: 500%;
+}
+
+.headding {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.mat-column-id {
+    width: 20%;
+}
+
+.mat-column-ptfrom {
+    width: 20%;
+}
+
+.mat-column-ptto {
+    width: 20%;
+}
+
+.mat-column-ptvalues {
+    width: 20%;
+}
+
+.mat-column-actions {
+    width: 20%;
+}
+
+.sub-headingg {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1572A1;
+}
+
+.sub-headding {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.profForm,
+.incomForm,
+.daForm {
+    margin: 10px;
+}
+
+.Dynamic_form {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 0px 1px 3px 0px;
+    margin-bottom: 8px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.updatebtn {
+    margin-top: 20px;
+}
+
+.delete_dynamic {
+    margin-top: 40px !important;
+    margin-left: 30px !important;
+    width: auto;
+    color: red;
+}
+
+.add_dynamic {
+    margin-top: 20px !important;
+    margin-left: 30px !important;
+    width: auto;
+    color: blue;
+}
+
+.save_dynamic {
+    margin-top: 20px !important;
+    margin-left: 30px !important;
+    width: auto;
+    color: green;
+}
+
+.main_dynamic_form .btn {
+    height: auto !important;
+}
+
+input {
+    width: 11rem;
+}
+
+.buttEnd {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mat-icon {
+    margin-top: 5px !important;
+}
+
+.footerButtons {
+    margin-top: 20px;
+}
+
+/* tables */
+.card {
+
+    background-color: #1572A1;
+    height: 90%;
+    border-radius: 10px;
+    /* border: 1px solid #ddd; */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+    margin: 0px;
+}
+
+.table-container td {
+    text-align: start;
+    margin-top: 5px;
+
+}
+
+.table-container th {
+    text-align: left;
+}
+
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.application-table th {
+    background-color: #1572A1 !important;
+    color: #fff;
+}
+
+.application-table td {
+    background-color: #EFDAD7 !important;
+    color: black;
+}
+
+/* TopButton */
+
+.topButtons {
+    height: 55px
+}
+
+.active {
+    background-color: #161f6d !important;
+    color: #fff;
+}
+
+.btn-outline:hover {
+    background-color: #161f6d !important;
+    color: #fff;
+}
+
+mat-paginator {
+    background-color: #EFDAD7 !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    /* Optional: Remove the margin */
+}
+
+.form-control {
+    margin-top: 10px;
+}
+
+.label-name {
+    color: #3E3232;
+}
+
+.mat-column-id {
+    width: 50px;
+    /* Set width for the ID column */
+}
+
+.mat-column-ccaFromPay {
+    width: 100px;
+    /* Set width for the From column */
+}
+
+.mat-column-ccaToPay {
+    width: 100px;
+    /* Set width for the To column */
+}
+
+.mat-column-ccaFirstValue {
+    width: 100px;
+    /* Set width for the To column */
+}
+
+.mat-column-ccaSecondValue {
+    width: 100px;
+    /* Set width for the To column */
+}
+
+.mat-column-actions {
+    width: 100px;
+    /* Set width for the To column */
+}
+
+#excel{
+
+    background-color: #26582fd0;
+    color: white;
+  }
+  .pdfBtn{
+    box-shadow: 0px 0px 3px 1px;
+    font-weight: 500;
+    background-color: #a5481d;
+    color: white;
+  }

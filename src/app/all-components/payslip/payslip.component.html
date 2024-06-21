@@ -1,0 +1,342 @@
+<ngx-spinner type="ball-scale-multiple">Please wait Until the Loading Completed...</ngx-spinner>
+
+
+<section class="main-content">
+    <h3 class="sub-heading">Payslip</h3>
+    <div class="d-flex">
+        <div class="search-container">
+            <label for="">Employee Id : </label>
+            <input type="text" placeholder="Search Employee ID" [(ngModel)]="searchText" *ngIf="inputId"
+                class="form-control" (input)="filterEmployeeIDs()" />
+            <select name="" id="" class="form-select" (change)="employeeId($event)" [(ngModel)]="selectedEmployeeid"
+                [disabled]="idDropdown">
+                <option value="">Select</option>
+                <option *ngFor="let employee of filteredEmployeeIDs" [value]="employee.employeeId">
+                    {{employee.employeeId}}</option>
+            </select>
+        </div>
+
+        <div class="search-container">
+            <label for="">Year : </label>
+            <select name="" id="" class="form-select" (change)="onYearSelect($event)" [(ngModel)]="selectedYear"
+                [disabled]="dropDown">
+                <option value="">Select</option>
+                <option *ngFor="let year of years" [value]="year">{{year}}</option>
+            </select>
+        </div>
+
+        <div class="search-container">
+            <label for="">Month : </label>
+            <select class="form-select" (change)="onMonthSelect($event)" [(ngModel)]="selectedMonth"
+                [disabled]="dropDown">
+                <option value="">Select</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+
+
+        </div>
+    </div>
+
+    <button type="button" class="btn btn pdfButton m-1" (click)="generateNext()" *ngIf="generateButton">Generate another
+        Payslip</button>
+
+    <div class="submit-container" *ngIf="generateButton">
+        <button type="button" class="btn btn pdfButton m-1" (click)="generatePDF()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="mw" fill="currentColor"
+                class="bi bi-file-earmark-arrow-down-fill biPdf-btn" viewBox="0 0 16 16">
+                <path
+                    d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1-.708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
+            </svg>PDF</button> <!--(click)="generatePDF()"-->
+    </div>
+</section>
+
+<div style="padding: 20px;font-family: Arial, Helvetica, sans-serif;">
+    <section #content *ngIf="paySlipGen">
+        <div class="payslip">
+            <div class="header">
+                <div class="logo">
+                    <img src="../../../assets/images/tnhb_logo.png" alt="Tamil Nadu Housing Board Logo">
+                </div>
+                <div class="title">
+                    <h1>Payslip for the month of</h1>
+                    <h2><strong>{{payMonth}} - {{getYear}}</strong></h2>
+                </div>
+            </div>
+            <div class="container">
+    
+                <div class="employee-summary" style="margin-left: 50px;">
+                    <h3><strong>EMPLOYEE SUMMARY</strong></h3>
+                    <div class="d-flex">
+                        <p class="eName">Employee Name </p>
+                        <p>: {{name}}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="eDesignation">Designation </p>
+                        <p>: {{designation}}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="eId">Employee ID </p>
+                        <p>: {{id}}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="eJoin">Date of Joining </p>
+                        <p>: {{joinDate}}</p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="ePeriod">Office Code </p>
+                        <p>: {{officeCode}}</p>
+                    </div>
+                </div>
+    
+                <div class="amount">
+                    <div class="netPay" style="background-color: #A9CEF4;">
+                        <h2 style="margin-top: 5px;">&#8377; {{totalNetpayValue | number:'1.2-2'}}</h2>
+                        <span>NET PAY</span>
+                    </div>
+                    <div class="days">
+                        <div class="paid">
+                            Paid Days: {{paidDays}}
+    
+                        </div>
+                        <div class="paid">
+                            LOP Days: {{lopDays}}
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <hr>
+    
+            <div class="account-info" style="margin-left: 50px;">
+                <p><strong>PF Account No :</strong> {{pfNum}}</p>
+                <p><strong>Pan No :</strong> {{panNumber}}</p>
+            </div>
+            <div class="account-info" style="margin-left: 50px;">
+                <p><strong>Bank Name :</strong> {{bankName}}</p>
+                <p><strong>Bank Branch Name :</strong> {{bankBranchName}}</p>
+                <p><strong>Bank A/C No :</strong> {{bankAccNo}}</p>
+                <p><strong>Bank IFSC :</strong> {{bankIFSC}}</p>
+            </div>
+            <div class="table-container row">
+                <!-- Earnings Table -->
+                <div class="col-6">
+                    <table class="earningsTable">
+                        <thead>
+                          <tr>
+                            <th style="text-align: center;">EARNINGS</th>
+                            <th style="text-align: center;">AMOUNT</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngIf="getPaySlip.basicPayEarning !== 0">
+                            <td>Basic Pay</td>
+                            <td style="text-align: right;">{{getPaySlip.basicPayEarning}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.personalPay !== 0">
+                            <td>Personal Pay</td>
+                            <td style="text-align: right;">{{getPaySlip.personalPay}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.specialPay !== 0">
+                            <td>Special Pay</td>
+                            <td style="text-align: right;">{{getPaySlip.specialPay}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.da !== 0">
+                            <td>DA</td>
+                            <td style="text-align: right;">{{getPaySlip.da}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.hra !== 0">
+                            <td>HRA</td>
+                            <td style="text-align: right;">{{getPaySlip.hra}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.cca !== 0">
+                            <td>CCA</td>
+                            <td style="text-align: right;">{{getPaySlip.cca}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.medicalAllowance !== 0">
+                            <td>Medical Allowance</td>
+                            <td style="text-align: right;">{{getPaySlip.medicalAllowance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.fta !== 0">
+                            <td>FTA</td>
+                            <td style="text-align: right;">{{getPaySlip.fta}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.hillAllowance !== 0">
+                            <td>Hill Allowance</td>
+                            <td style="text-align: right;">{{getPaySlip.hillAllowance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.winterAllowance !== 0">
+                            <td>Winter Allowance</td>
+                            <td style="text-align: right;">{{getPaySlip.winterAllowance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.washingAllowance !== 0">
+                            <td>Washing Allowance</td>
+                            <td style="text-align: right;">{{getPaySlip.washingAllowance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.conveyanceAllowanceEarnings !== 0">
+                            <td>Conveyance Allowance</td>
+                            <td style="text-align: right;">{{getPaySlip.conveyanceAllowanceEarnings}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.cashAllowance !== 0">
+                            <td>Cash Allowance</td>
+                            <td style="text-align: right;">{{getPaySlip.cashAllowance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.interimRelief !== 0">
+                            <td>Interim Relief</td>
+                            <td style="text-align: right;">{{getPaySlip.interimRelief}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.misc1 !== 0">
+                            <td>Misc 1</td>
+                            <td style="text-align: right;">{{getPaySlip.misc1}}.00</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th>Gross Earnings</th>
+                            <th style="text-align: right;">{{earningSums}}.00</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                </div>
+              
+                <!-- Deductions Table -->
+                <div class="col-6">
+                    <table class="deductionsTable">
+                        <thead>
+                          <tr>
+                            <th style="text-align: center;">DEDUCTIONS</th>
+                            <th style="text-align: center;">AMOUNT</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngIf="getPaySlip.pfcps=='CPS'">
+                            <td>CPS</td>
+                            <td style="text-align: right;">{{getPaySlip.cps}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.pfcps=='PF'">
+                            <td>GPF</td>
+                            <td style="text-align: right;">{{getPaySlip.gpfSub}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.fbf !== 0">
+                            <td>FBF</td>
+                            <td style="text-align: right;">{{getPaySlip.fbf}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.nhis !== 0">
+                            <td>NHIS</td>
+                            <td style="text-align: right;">{{getPaySlip.nhis}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.specialPf !== 0">
+                            <td>Special PF</td>
+                            <td style="text-align: right;">{{getPaySlip.specialPf}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.hba !== 0">
+                            <td>HBA</td>
+                            <td style="text-align: right;">{{getPaySlip.hba}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.hbf !== 0">
+                            <td>HBF</td>
+                            <td style="text-align: right;">{{getPaySlip.hbf}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.rentDeductions !== 0">
+                            <td *ngIf="getPaySlip.rent==='Concessional'">Concessional Rent</td>
+                            <td *ngIf="getPaySlip.rent==='Notional'">Notional Rent</td>
+                            <td style="text-align: right;">{{getPaySlip.rentDeductions}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.rent!='No'">
+                            <td>Water Charges</td>
+                            <td style="text-align: right;">{{getPaySlip.waterCharges}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.professionalTax !== 0">
+                            <td>Professional Tax</td>
+                            <td style="text-align: right;">{{getPaySlip.professionalTax}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.oneDayRecovery !== 0">
+                            <td>One Day Recovery</td>
+                            <td style="text-align: right;">{{getPaySlip.oneDayRecovery}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.incomeTax !== 0">
+                            <td>Income Tax</td>
+                            <td style="text-align: right;">{{getPaySlip.incomeTax}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.incomeTaxCess !== 0">
+                            <td>Income Tax Cess</td>
+                            <td style="text-align: right;">{{getPaySlip.incomeTaxCess}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.eoe !== 0">
+                            <td>EoE</td>
+                            <td style="text-align: right;">{{getPaySlip.eoe}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.cpsArrear !== 0">
+                            <td>CPS Arrear</td>
+                            <td style="text-align: right;">{{getPaySlip.cpsArrear}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.festivalAdvance !== 0">
+                            <td>Festival Advance</td>
+                            <td style="text-align: right;">{{getPaySlip.festivalAdvance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.conveyanceAdvance !== 0">
+                            <td>Conveyance Advance</td>
+                            <td style="text-align: right;">{{getPaySlip.conveyanceAdvance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.educationAdvance !== 0">
+                            <td>Education Advance</td>
+                            <td style="text-align: right;">{{getPaySlip.educationAdvance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.marriageAdvance !== 0">
+                            <td>Marriage Advance</td>
+                            <td style="text-align: right;">{{getPaySlip.marriageAdvance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.payAdvance !== 0">
+                            <td>Pay Advance</td>
+                            <td style="text-align: right;">{{getPaySlip.payAdvance}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.miscDeduction1 !== 0">
+                            <td>Misc 1</td>
+                            <td style="text-align: right;">{{getPaySlip.miscDeduction1}}.00</td>
+                          </tr>
+                          <tr *ngIf="getPaySlip.miscDeduction2 !== 0">
+                            <td>Misc 2</td>
+                            <td style="text-align: right;">{{getPaySlip.miscDeduction2}}.00</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th>Total Deductions</th>
+                            <th style="text-align: right;">{{deductionValues}}.00</th>
+                          </tr>
+                        </tfoot>
+                        </table>
+                </div>
+            </div>
+         
+    
+            <div class="row amountBottom" style="margin-left: 50px;">
+                <div class="col-7">
+                    <h3><strong>TOTAL NET PAYABLE</strong></h3>
+                    <p><strong>Amount in Words: {{words}}</strong></p>
+                </div>
+                <div class="col-3" id="amount-col">
+                    <h4 class="highlight-background value mt-3"><b>&#8377;{{totalNetpayValue | number:'1.2-2'}}</b></h4>
+                </div>
+            </div>
+    
+            <div class="bottomLine"></div>
+            <h4 class="content">
+                -This document is system generated,therefore,a signature is not required .
+            </h4>
+    
+        </div>
+    </section>
+</div>
+
